@@ -1,0 +1,283 @@
+# Edit this configuration file to define what should be installed on
+# your system. Help is available in the configuration.nix(5) man page, on
+# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+
+{ config, lib, pkgs, ... }:
+
+{
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Use latest kernel.
+  boot.kernelPackages = pkgs.linuxPackages_zen;
+
+  boot.initrd.kernelModules = [
+    "dm-snapshot"
+    "dm-raid"
+    "dm-cache-default"
+  ];
+
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/41f6c891-cf99-4d0f-9ff8-7438dcaba239";
+
+  fileSystems."/" = {
+    #device = "/dev/disk/by-uuid/67965a9d-a137-4a9f-816b-5c1add1a69da"
+    #fsType = "btrfs";
+    options = [ "compress=zstd" ];
+  };
+  
+  
+  fileSystems."/home" = {
+    #device = "/dev/disk/by-uuid/67965a9d-a137-4a9f-816b-5c1add1a69da"
+    #fsType = "btrfs";
+    options = [ "compress=zstd" ];
+  };
+
+  
+  fileSystems."/nix" = {
+    #device = "/dev/disk/by-uuid/67965a9d-a137-4a9f-816b-5c1add1a69da"
+    #fsType = "btrfs";
+    options = [ "compress=zstd" "noatime" ];
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/AA6A-89B3";
+    fsType = "vfat";
+  };
+
+  services.btrfs.autoScrub.enable = true;
+  services.btrfs.autoScrub.interval = "weekly";
+  services.btrfs.autoScrub.fileSystems = [ "/" ];
+
+  #services.beesd.filesystems = {
+  #  root = {
+  #    spec = "";
+  #    hashTableSizeMB = 2048;
+  #    verbosity = "crit";
+  #    extraOptions = [ "--loadavg-target" "5.0" ];
+  #  };
+  #};
+
+  swapDevices = [ {device = "/dev/disk/by-uuid/b1a3f251-18b2-4c03-ad42-775da7c7e5d2";} ];
+
+  networking.hostName = "lament"; # Define your hostname.
+
+  # Configure network connections interactively with nmcli or nmtui.
+  networking.networkmanager.enable = true;
+
+  # Set your time zone.
+  time.timeZone = "Asia/Kolkata";
+
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_IN";
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  #   useXkbConfig = true; # use xkb.options in tty.
+  # };
+
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  # Enable KDE Plasma
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
+  
+
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
+  # Enable sound.
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+    # Depracated for wireplumber but idk 
+    #media-session.enable = true;
+  };
+
+  nix.settings = {
+    substituters = [ "https://cache.nixos-cuda.org" ];
+    trusted-public-keys = [ "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" ];
+  };
+  
+  hardware.bluetooth.enable = true;
+  hardware.nvidia-container-toolkit.enable = true; 
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+  hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    modesetting.enable = true;
+    powerManagement.enable = true;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = true;
+    prime = {
+      sync.enable = true;
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
+  };
+
+  specialisation = {
+    on-the-go.configuration = {
+      system.nixos.tags = [ "on-the-go" ];
+      hardware.nvidia = {
+        prime.offload.enable = lib.mkForce true;
+	prime.offload.enableOffloadCmd = lib.mkForce true;
+	prime.sync.enable = lib.mkForce false;
+      };
+    };
+  };
+
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.libinput.enable = true;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.jo = {
+    isNormalUser = true;
+    description = "jo";
+    extraGroups = [ "networkmanager" "docker" "wheel" ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [
+      tree
+      kdePackages.kate
+    ];
+  };
+
+  programs.firefox.enable = true;
+  
+  nixpkgs.config.allowUnfree = true;
+  # Caused too much recompilation. 12hrs wasnt enough. 
+  # nixpkgs.config.cudaSupport = true;
+  
+  # pkgs installed in system profile.
+  # https://search.nixos.org
+  environment.systemPackages = with pkgs; [
+    neovim
+    wget
+    curl
+    tailscale
+    deskflow
+    btop
+    bat
+    nethogs
+    iotop
+    docker
+    net-tools
+    zed-editor
+    vesktop
+    cider-2
+    jellyfin-desktop
+    zsh
+    kitty
+    spotify
+    screen
+    tmux
+    rsync
+    pavucontrol
+    bitwarden-desktop
+    bitwarden-cli
+    keepassxc
+    keybase-gui
+    keybase 
+    git
+    unzip
+    gnupg
+    autoconf
+    binutils
+    cryptsetup
+    lvm2
+    btrfs-progs
+    util-linux
+    coreutils
+    dosfstools
+    cudaPackages.cudnn
+    cudaPackages.cudatoolkit
+    mcontrolcenter
+    lshw
+    pciutils
+    throttled
+    pkgs.linuxKernel.packages.linux_zen.msi-ec
+  ];
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+  };
+
+  programs.gamemode.enable = true;
+  
+  virtualisation.docker.enable = true;
+  virtualisation.docker.daemon.settings.features.cdi = true;
+  services.tailscale.enable = true;
+  services.throttled.enable = true;
+  
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+
+  services.openssh.enable = true;
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you
+  # accidentally delete configuration.nix.
+  # system.copySystemConfiguration = true;
+
+  # This option defines the first version of NixOS you have installed on this particular machine,
+  # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
+  #
+  # Most users should NEVER change this value after the initial install, for any reason,
+  # even if you've upgraded your system to a new NixOS release.
+  #
+  # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
+  # so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how
+  # to actually do that.
+  #
+  # This value being lower than the current NixOS release does NOT mean your system is
+  # out of date, out of support, or vulnerable.
+  #
+  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
+  # and migrated your data accordingly.
+  #
+  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+  system.stateVersion = "25.11"; # Did you read the comment?
+
+}
+
