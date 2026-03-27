@@ -9,13 +9,23 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+  
+  # Boot
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [ "split_lock_mitigate=0" ];
+
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+    "riscv64-linux"
+  ];
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelModules = [ "msi-ec" ];
+  boot.extraModprobeConfig = "options kvm_intel nested=1";
 
   boot.initrd.kernelModules = [
     "dm-snapshot"
@@ -24,6 +34,26 @@
   ];
 
   boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/41f6c891-cf99-4d0f-9ff8-7438dcaba239";
+  boot.supportedFilesystems = [ "ntfs" ];
+  boot.extraModulePackages = [
+    (config.boot.kernelPackages.msi-ec.overrideAttrs (oldAttrs: {
+      src = pkgs.fetchFromGitHub {
+        owner = "BeardOverflow";
+        repo = "msi-ec";
+        rev = "ffb36db8ae28a520dd570f56735de49845106e0e";
+        sha256 = "sha256-MdFue0buh/8yE4lIdEbLa11pkwfRFvQ6VIU9mZM3hDo="; 
+      };
+      patches = [ ];
+      postPatch = ''
+        # Replace the hardcoded paths
+        # Append the modules_install target - required by Nixpkgs
+        sed -i 's|/lib/modules/[^/]*/build|$(KERNELDIR)|g' Makefile
+        echo -e '\nmodules_install:\n\t$(MAKE) -C $(KERNELDIR) M=$(CURDIR) modules_install' >> Makefile
+      '';
+    }))
+  ];
+
+  # FS
 
   fileSystems."/" = {
     #device = "/dev/disk/by-uuid/67965a9d-a137-4a9f-816b-5c1add1a69da"
@@ -50,6 +80,36 @@
     fsType = "vfat";
   };
 
+  fileSystems."/mnt/winstor" = {
+    device = "/dev/disk/by-uuid/35DAEB472596A2F6";
+    fsType = "ntfs3";
+    options = [
+      "nofail"
+      "users"
+      "force"
+      "fmask=0022"
+      "dmask=0022"
+      "exec"
+      "rw"
+      "uid=1000"
+    ];
+  };
+
+  fileSystems."/mnt/windows" = {
+    device = "/dev/disk/by-uuid/5CDAC3B2DAC3872C";
+    fsType = "ntfs3";
+    options = [
+      "nofail"
+      "users"
+      "force"
+      "fmask=0022"
+      "dmask=0022"
+      "exec"
+      "rw"
+      "uid=1000"
+    ];
+  };
+
   services.btrfs.autoScrub.enable = true;
   services.btrfs.autoScrub.interval = "weekly";
   services.btrfs.autoScrub.fileSystems = [ "/" ];
@@ -65,10 +125,14 @@
 
   swapDevices = [ {device = "/dev/disk/by-uuid/b1a3f251-18b2-4c03-ad42-775da7c7e5d2";} ];
 
+  # Networking
+
   networking.hostName = "lament"; # Define your hostname.
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
+
+  # TZ & Locales
 
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
@@ -81,9 +145,11 @@
   i18n.defaultLocale = "en_IN";
   # console = {
   #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
+  #   keyMap = "us";`
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
+  
+  # DE & WM
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -101,6 +167,8 @@
   };
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
+  # Services
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -113,15 +181,17 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
-    # Depracated for wireplumber but idk 
+    # Depracated for wireplumber but idk if i need it 
     #media-session.enable = true;
   };
-
+  
+  # Cuda package cache lists & keys
   nix.settings = {
     substituters = [ "https://cache.nixos-cuda.org" ];
     trusted-public-keys = [ "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" ];
   };
   
+  # Hardware
   hardware.bluetooth.enable = true;
   hardware.nvidia-container-toolkit.enable = true; 
   hardware.graphics = {
@@ -143,6 +213,7 @@
     };
   };
 
+  # Create a OTG boot entrywith the GPU offload disabled
   specialisation = {
     on-the-go.configuration = {
       system.nixos.tags = [ "on-the-go" ];
@@ -162,12 +233,14 @@
   users.users.jo = {
     isNormalUser = true;
     description = "jo";
-    extraGroups = [ "networkmanager" "docker" "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "networkmanager" "docker" "wheel" "libvirtd"  ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       tree
       kdePackages.kate
     ];
   };
+
+  # Packages & Apps
 
   programs.firefox.enable = true;
   
@@ -222,7 +295,27 @@
     lshw
     pciutils
     throttled
-    pkgs.linuxKernel.packages.linux_zen.msi-ec
+    github-desktop
+    gh
+    nvtopPackages.full
+    vscode
+    heroic-unwrapped
+    lutris-unwrapped
+    protonplus
+    protonup-qt
+    protonup-rs
+    protontricks
+    alacritty
+    alacritty-theme
+    (prismlauncher.override { jdks = [ jdk8 jdk17 jdk21 jdk25 ]; })
+    javaPackages.compiler.temurin-bin.jdk-25
+    sof-firmware
+    virtiofsd
+    virtio-win
+    virt-viewer
+    virt-manager
+    qemu
+    mangohud
   ];
 
   programs.steam = {
@@ -233,8 +326,21 @@
 
   programs.gamemode.enable = true;
   
+  # Virtualisation
+
   virtualisation.docker.enable = true;
   virtualisation.docker.daemon.settings.features.cdi = true;
+
+  systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
+  virtualisation.libvirtd = {
+   enable = true;
+   qemu = {
+     package = pkgs.qemu_kvm;
+     runAsRoot = true;
+     swtpm.enable = true;
+   };
+  };
+  virtualisation.libvirtd.qemu.vhostUserPackages = [ pkgs.virtiofsd ];
   services.tailscale.enable = true;
   services.throttled.enable = true;
   
