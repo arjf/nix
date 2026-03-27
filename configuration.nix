@@ -17,6 +17,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [ "split_lock_mitigate=0" ];
 
+  #
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
     "riscv64-linux"
@@ -35,6 +36,9 @@
 
   boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/41f6c891-cf99-4d0f-9ff8-7438dcaba239";
   boot.supportedFilesystems = [ "ntfs" ];
+
+  # This is a hacky way of running a newer version of msi-ec which supports my fw 
+  # Adapting the patches from the nixos-pkg
   boot.extraModulePackages = [
     (config.boot.kernelPackages.msi-ec.overrideAttrs (oldAttrs: {
       src = pkgs.fetchFromGitHub {
@@ -204,7 +208,7 @@
     modesetting.enable = true;
     powerManagement.enable = true;
     powerManagement.finegrained = false;
-    open = false;
+    open = false; # Maybe open to in the future, once 
     nvidiaSettings = true;
     prime = {
       sync.enable = true;
@@ -213,7 +217,7 @@
     };
   };
 
-  # Create a OTG boot entrywith the GPU offload disabled
+  # Create a OTG boot entr ywith GPU offload disabled
   specialisation = {
     on-the-go.configuration = {
       system.nixos.tags = [ "on-the-go" ];
@@ -245,77 +249,97 @@
   programs.firefox.enable = true;
   
   nixpkgs.config.allowUnfree = true;
-  # Caused too much recompilation. 12hrs wasnt enough. 
+  # Caused too much recompilation.
+  # Ideally I enable cudaSupport per package
   # nixpkgs.config.cudaSupport = true;
   
   # pkgs installed in system profile.
   # https://search.nixos.org
   environment.systemPackages = with pkgs; [
+    # cmdline
     neovim
     wget
     curl
-    tailscale
-    deskflow
     btop
     bat
     nethogs
     iotop
-    docker
     net-tools
-    zed-editor
-    vesktop
-    cider-2
-    jellyfin-desktop
-    zsh
-    kitty
-    spotify
+    binutils
+    util-linux
+    unzip
     screen
     tmux
     rsync
+    coreutils
+    lshw
+    pciutils
+    nvtopPackages.full
+    
+    # System
+    btrfs-progs
+    cryptsetup
+    lvm2
+    dosfstools
+    throttled
+    mcontrolcenter
+    sof-firmware
     pavucontrol
+    
+    # Shell
+    zsh
+    alacritty
+    alacritty-theme
+    kitty
+
+    # Sec
+    gnupg
     bitwarden-desktop
     bitwarden-cli
     keepassxc
     keybase-gui
-    keybase 
-    git
-    unzip
-    gnupg
-    autoconf
-    binutils
-    cryptsetup
-    lvm2
-    btrfs-progs
-    util-linux
-    coreutils
-    dosfstools
+    keybase
+
+    # Cuda
     cudaPackages.cudnn
     cudaPackages.cudatoolkit
-    mcontrolcenter
-    lshw
-    pciutils
-    throttled
-    github-desktop
+    
+    # Dev
+    docker
+    zed-editor
+    git
     gh
-    nvtopPackages.full
+    github-desktop
     vscode
+    javaPackages.compiler.temurin-bin.jdk-25
+    autoconf
+
+    # Games
     heroic-unwrapped
     lutris-unwrapped
     protonplus
     protonup-qt
     protonup-rs
     protontricks
-    alacritty
-    alacritty-theme
     (prismlauncher.override { jdks = [ jdk8 jdk17 jdk21 jdk25 ]; })
-    javaPackages.compiler.temurin-bin.jdk-25
-    sof-firmware
+    mangohud
+
+    # Music & Media
+    cider-2
+    spotify
+    jellyfin-desktop
+
+    # libvirt/qemu
     virtiofsd
     virtio-win
     virt-viewer
     virt-manager
     qemu
-    mangohud
+
+    # Misc
+    tailscale
+    deskflow
+    vesktop
   ];
 
   programs.steam = {
