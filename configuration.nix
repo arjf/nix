@@ -114,6 +114,51 @@
     ];
   };
 
+  # Mount points for external HDD
+  fileSystems."/mnt/arnav" = {
+    device = "/dev/disk/by-uuid/DE82-04C5";
+    fsType = "exfat";
+    options = [
+      "x-systemd.automount"
+      "uid=1000"
+      "nofail"
+      "users"
+      "fmask=0022"
+      "dmask=0022"
+      "exec"
+      "rw"
+    ];
+  };
+
+
+  fileSystems."/mnt/w" = {
+    device = "/dev/disk/by-uuid/5C12D51312D4F2CE";
+    fsType = "ntfs3";
+    options = [
+      "x-systemd.automount"
+      "uid=1000"
+      "nofail"
+      "users"
+      "force"
+      "fmask=0022"
+      "dmask=0022"
+      "exec"
+      "rw"
+    ];
+  };
+
+  fileSystems."/home/jo/w" = {
+    device = "/mnt/w";
+    fsType = "none";
+    #depends = [ "/mnt/w" ];
+    options = [ 
+      "bind" 
+      "nofail"
+      "x-systemd.automount"
+      "x-systemd.requiresMountsFor=/mnt/w"
+    ];
+  };
+
   services.btrfs.autoScrub.enable = true;
   services.btrfs.autoScrub.interval = "weekly";
   services.btrfs.autoScrub.fileSystems = [ "/" ];
