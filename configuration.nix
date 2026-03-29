@@ -333,6 +333,7 @@
     mcontrolcenter
     sof-firmware
     pavucontrol
+    wl-clipboard
     
     # Shell
     zsh
@@ -383,6 +384,7 @@
     virt-viewer
     virt-manager
     qemu
+    waydroid-helper
 
     # Misc
     tailscale
@@ -399,10 +401,12 @@
   programs.gamemode.enable = true;
   
   # Virtualisation
-
+  
+  # Docker
   virtualisation.docker.enable = true;
   virtualisation.docker.daemon.settings.features.cdi = true;
-
+   
+  # VMs with libvirt
   systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
   virtualisation.libvirtd = {
    enable = true;
@@ -413,6 +417,20 @@
    };
   };
   virtualisation.libvirtd.qemu.vhostUserPackages = [ pkgs.virtiofsd ];
+
+  # Waydroid
+  virtualisation.waydroid.enable = true;
+  systemd.packages = [ pkgs.waydroid-helper ];
+  systemd.services.waydroid-mount.wantedBy = [ "multi-user.target" ];
+  services.geoclue2.enable = true;
+  programs.adb.enable = true;
+
+  programs.kdeconnect = {
+    enable = true;
+  };
+
+  # Services
+
   services.tailscale.enable = true;
 
   # Throttled daemon for managing intel CPUs
