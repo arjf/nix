@@ -118,6 +118,9 @@
   services.btrfs.autoScrub.interval = "weekly";
   services.btrfs.autoScrub.fileSystems = [ "/" ];
 
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
+
   #services.beesd.filesystems = {
   #  root = {
   #    spec = "";
@@ -217,7 +220,7 @@
     };
   };
 
-  # Create a OTG boot entr ywith GPU offload disabled
+  # Create a OTG boot entry with GPU offload disabled
   specialisation = {
     on-the-go.configuration = {
       system.nixos.tags = [ "on-the-go" ];
@@ -237,7 +240,7 @@
   users.users.jo = {
     isNormalUser = true;
     description = "jo";
-    extraGroups = [ "networkmanager" "docker" "wheel" "libvirtd"  ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "networkmanager" "docker" "wheel" "libvirtd" "storage" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       tree
       kdePackages.kate
