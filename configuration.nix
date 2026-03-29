@@ -369,8 +369,10 @@
   };
   virtualisation.libvirtd.qemu.vhostUserPackages = [ pkgs.virtiofsd ];
   services.tailscale.enable = true;
+
+  # Throttled daemon for managing intel CPUs
   services.throttled.enable = true;
-  
+  services.throttled.extraConfig = builtins.readFile ./etc/throttled.conf;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
