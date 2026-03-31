@@ -15,9 +15,10 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelParams = [ 
+  boot.kernelParams = [
     #"split_lock_mitigate=0"
-    "split_lock_detect=off" 
+    "split_lock_detect=off"
+    "i915.enable_psr=0"
   ];
 
   #
@@ -25,6 +26,13 @@
     "aarch64-linux"
     "riscv64-linux"
   ];
+
+  # Sysctl
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 10;
+    "vm.dirty_byes" = 268435456;
+    "vm.dirty_background_bytes" = 134217728;
+  };
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_zen;
@@ -273,6 +281,11 @@
   specialisation = {
     on-the-go.configuration = {
       system.nixos.tags = [ "on-the-go" ];
+      boot.kernelParams = [
+        #"split_lock_mitigate=0"
+        "split_lock_detect=off"
+        "i915.enable_psr=0"
+      ];
       hardware.nvidia = {
         prime.offload.enable = lib.mkForce true;
 	prime.offload.enableOffloadCmd = lib.mkForce true;
