@@ -115,20 +115,21 @@
   };
 
   # Mount points for external HDD
-  fileSystems."/mnt/arnav" = {
-    device = "/dev/disk/by-uuid/DE82-04C5";
-    fsType = "exfat";
-    options = [
-      "x-systemd.automount"
-      "uid=1000"
-      "nofail"
-      "users"
-      "fmask=0022"
-      "dmask=0022"
-      "exec"
-      "rw"
-    ];
-  };
+  # still regret choosing exfat to this day
+  # fileSystems."/mnt/arnav" = {
+  #   device = "/dev/disk/by-uuid/DE82-04C5";
+  #   fsType = "exfat";
+  #   options = [
+  #     "x-systemd.automount"
+  #     "uid=1000"
+  #     "nofail"
+  #     "users"
+  #     "fmask=0022"
+  #     "dmask=0022"
+  #     "exec"
+  #     "rw"
+  #   ];
+  # };
 
 
   fileSystems."/mnt/w" = {
@@ -147,17 +148,17 @@
     ];
   };
 
-  fileSystems."/home/jo/w" = {
-    device = "/mnt/w";
-    fsType = "none";
-    #depends = [ "/mnt/w" ];
-    options = [ 
-      "bind" 
-      "nofail"
-      "x-systemd.automount"
-      "x-systemd.requiresMountsFor=/mnt/w"
-    ];
-  };
+  # fileSystems."/home/jo/w" = {
+  #   device = "/mnt/w";
+  #   fsType = "none";
+  #   #depends = [ "/mnt/w" ];
+  #   options = [ 
+  #     "bind" 
+  #     "nofail"
+  #     "x-systemd.automount"
+  #     "x-systemd.requiresMountsFor=/mnt/w"
+  #   ];
+  # };
 
   services.btrfs.autoScrub.enable = true;
   services.btrfs.autoScrub.interval = "weekly";
