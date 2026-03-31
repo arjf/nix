@@ -21,7 +21,7 @@
     "i915.enable_psr=0"
   ];
 
-  #
+  # Emulated architectures
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
     "riscv64-linux"
@@ -163,8 +163,8 @@
   #   device = "/mnt/w";
   #   fsType = "none";
   #   #depends = [ "/mnt/w" ];
-  #   options = [ 
-  #     "bind" 
+  #   options = [
+  #     "bind"
   #     "nofail"
   #     "x-systemd.automount"
   #     "x-systemd.requiresMountsFor=/mnt/w"
@@ -288,8 +288,8 @@
       ];
       hardware.nvidia = {
         prime.offload.enable = lib.mkForce true;
-	prime.offload.enableOffloadCmd = lib.mkForce true;
-	prime.sync.enable = lib.mkForce false;
+       	prime.offload.enableOffloadCmd = lib.mkForce true;
+       	prime.sync.enable = lib.mkForce false;
       };
     };
   };
