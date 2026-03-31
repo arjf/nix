@@ -15,7 +15,10 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelParams = [ "split_lock_mitigate=0" ];
+  boot.kernelParams = [ 
+    #"split_lock_mitigate=0"
+    "split_lock_detect=off" 
+  ];
 
   #
   boot.binfmt.emulatedSystems = [
