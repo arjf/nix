@@ -9,7 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
-  
+
   # Boot
 
   # Use the systemd-boot EFI boot loader.
@@ -37,7 +37,7 @@
   boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/41f6c891-cf99-4d0f-9ff8-7438dcaba239";
   boot.supportedFilesystems = [ "ntfs" ];
 
-  # This is a hacky way of running a newer version of msi-ec which supports my fw 
+  # This is a hacky way of running a newer version of msi-ec which supports my fw
   # Adapting the patches from the nixos-pkg
   boot.extraModulePackages = [
     (config.boot.kernelPackages.msi-ec.overrideAttrs (oldAttrs: {
@@ -45,7 +45,7 @@
         owner = "BeardOverflow";
         repo = "msi-ec";
         rev = "ffb36db8ae28a520dd570f56735de49845106e0e";
-        sha256 = "sha256-MdFue0buh/8yE4lIdEbLa11pkwfRFvQ6VIU9mZM3hDo="; 
+        sha256 = "sha256-MdFue0buh/8yE4lIdEbLa11pkwfRFvQ6VIU9mZM3hDo=";
       };
       patches = [ ];
       postPatch = ''
@@ -64,15 +64,15 @@
     #fsType = "btrfs";
     options = [ "compress=zstd" ];
   };
-  
-  
+
+
   fileSystems."/home" = {
     #device = "/dev/disk/by-uuid/67965a9d-a137-4a9f-816b-5c1add1a69da"
     #fsType = "btrfs";
     options = [ "compress=zstd" ];
   };
 
-  
+
   fileSystems."/nix" = {
     #device = "/dev/disk/by-uuid/67965a9d-a137-4a9f-816b-5c1add1a69da"
     #fsType = "btrfs";
@@ -200,7 +200,7 @@
   #   keyMap = "us";`
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
-  
+
   # DE & WM
 
   # Enable the X11 windowing system.
@@ -210,7 +210,7 @@
   # Enable KDE Plasma
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
-  
+
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -233,19 +233,19 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
-    # Depracated for wireplumber but idk if i need it 
+    # Depracated for wireplumber but idk if i need it
     #media-session.enable = true;
   };
-  
+
   # Cuda package cache lists & keys
   nix.settings = {
     substituters = [ "https://cache.nixos-cuda.org" ];
     trusted-public-keys = [ "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" ];
   };
-  
+
   # Hardware
   hardware.bluetooth.enable = true;
-  hardware.nvidia-container-toolkit.enable = true; 
+  hardware.nvidia-container-toolkit.enable = true;
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -256,7 +256,7 @@
     modesetting.enable = true;
     powerManagement.enable = true;
     powerManagement.finegrained = false;
-    open = false; # Maybe open to in the future, once 
+    open = false; # Maybe open to in the future, once
     nvidiaSettings = true;
     prime = {
       sync.enable = true;
@@ -295,12 +295,12 @@
   # Packages & Apps
 
   programs.firefox.enable = true;
-  
+
   nixpkgs.config.allowUnfree = true;
   # Caused too much recompilation.
   # Ideally I enable cudaSupport per package
   # nixpkgs.config.cudaSupport = true;
-  
+
   # pkgs installed in system profile.
   # https://search.nixos.org
   environment.systemPackages = with pkgs; [
@@ -323,7 +323,7 @@
     lshw
     pciutils
     nvtopPackages.full
-    
+
     # System
     btrfs-progs
     cryptsetup
@@ -334,7 +334,7 @@
     sof-firmware
     pavucontrol
     wl-clipboard
-    
+
     # Shell
     zsh
     alacritty
@@ -352,7 +352,7 @@
     # Cuda
     cudaPackages.cudnn
     cudaPackages.cudatoolkit
-    
+
     # Dev
     docker
     zed-editor
@@ -399,13 +399,13 @@
   };
 
   programs.gamemode.enable = true;
-  
+
   # Virtualisation
-  
+
   # Docker
   virtualisation.docker.enable = true;
   virtualisation.docker.daemon.settings.features.cdi = true;
-   
+
   # VMs with libvirt
   systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
   virtualisation.libvirtd = {
@@ -478,4 +478,3 @@
   system.stateVersion = "25.11"; # Did you read the comment?
 
 }
-
