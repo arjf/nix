@@ -325,6 +325,8 @@
 
   # Packages & Apps
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   programs.firefox.enable = true;
 
   nixpkgs.config.allowUnfree = true;
