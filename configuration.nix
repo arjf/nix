@@ -231,6 +231,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.opengl.enable = true;
 
   # Enable KDE Plasma
   services.displayManager.sddm.enable = true;
@@ -392,6 +393,10 @@
     vscode
     javaPackages.compiler.temurin-bin.jdk-25
     autoconf
+    micromamba
+    pixi
+    qtscrcpy
+    scrcpy
 
     # Games
     heroic-unwrapped
@@ -421,6 +426,14 @@
     deskflow
     vesktop
   ];
+
+  programs.nix-ld.enable = true;
+
+  programs.nix-ld.libraries = with pkgs; [
+      stdenv.cc.cc.lib
+      zlib
+      glib
+    ];
 
   programs.steam = {
     enable = true;
