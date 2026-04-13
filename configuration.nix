@@ -272,6 +272,7 @@
   # Hardware
   hardware.bluetooth.enable = true;
   hardware.nvidia-container-toolkit.enable = true;
+  hardware.xone.enable = true;
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
