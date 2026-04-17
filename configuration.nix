@@ -36,7 +36,7 @@
   };
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "msi-ec" ];
   boot.extraModprobeConfig = "options kvm_intel nested=1";
 
