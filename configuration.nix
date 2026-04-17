@@ -19,6 +19,7 @@
     #"split_lock_mitigate=0"
     "split_lock_detect=off"
     "i915.enable_psr=0"
+    "pcie_aspm=off"
   ];
 
   # Emulated architectures
@@ -299,6 +300,7 @@
         #"split_lock_mitigate=0"
         "split_lock_detect=off"
         "i915.enable_psr=0"
+        "pcie_aspm=off"
       ];
       hardware.nvidia = {
         prime.offload.enable = lib.mkForce true;
