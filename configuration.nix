@@ -424,6 +424,7 @@
     virt-manager
     qemu
     waydroid-helper
+    pkgs.android-tools
 
     # Misc
     tailscale
@@ -470,7 +471,6 @@
   systemd.packages = [ pkgs.waydroid-helper ];
   systemd.services.waydroid-mount.wantedBy = [ "multi-user.target" ];
   services.geoclue2.enable = true;
-  programs.adb.enable = true;
 
   programs.kdeconnect = {
     enable = true;
