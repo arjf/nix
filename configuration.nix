@@ -2,12 +2,14 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      inputs.home-manager.nixosModules.default
+      inputs.nur.modules.nixos.default
     ];
 
   # Boot
@@ -493,7 +495,21 @@
   #   enableSSHSupport = true;
   # };
 
+  virtualisation.vmVariant = {
+      # following configuration is added only when building VM with build-vm
+      virtualisation = {
+        memorySize = 4096;
+        cores = 4;
+        graphics = true;
+      };
+      hardware.nvidia-container-toolkit.enable = lib.mkForce false;
+      #users.users.jo.initialPassword = "test";
+      users.users.jo.password = "test";
+      users.mutableUsers = false;
+    };
+
   services.openssh.enable = true;
+  networking.firewall.allowedTCPPorts = [ 22 ];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
