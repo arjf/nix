@@ -430,6 +430,7 @@
     tailscale
     deskflow
     vesktop
+    obsidian
   ];
 
   programs.nix-ld.enable = true;
