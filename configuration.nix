@@ -20,8 +20,9 @@
   boot.kernelParams = [
     #"split_lock_mitigate=0"
     "split_lock_detect=off"
-    "i915.enable_psr=0"
     "pcie_aspm=off"
+    "i915.force_probe=!9a68"
+    "xe.force_probe=9a68"
   ];
 
   # Emulated architectures
@@ -275,6 +276,7 @@
   };
 
   # Hardware
+  hardware.enableRedistributableFirmware = true;
   hardware.bluetooth.enable = true;
   hardware.nvidia-container-toolkit.enable = true;
   hardware.xone.enable = true;
