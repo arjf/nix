@@ -42,6 +42,24 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "msi-ec" ];
   boot.extraModprobeConfig = "options kvm_intel nested=1";
+  
+  boot.initrd.luks.cryptoModules = [
+    "aes"
+    # "aes_generic"
+    "blowfish"
+    "twofish"
+    "serpent"
+    "cbc"
+    "xts"
+    "lrw"
+    "sha1"
+    "sha256"
+    "sha512"
+    "af_alg"
+    "algif_skcipher"
+    "cryptd"
+    "input_leds" # for capslock LED on most keyboards in case decryption requires password
+  ];
 
   boot.initrd.kernelModules = [
     "dm-snapshot"
