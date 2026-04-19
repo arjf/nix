@@ -233,7 +233,10 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [
+    "modesetting"
+    "nvidia"
+  ];
 
   # Enable KDE Plasma
   services.displayManager.sddm.enable = true;
@@ -288,27 +291,13 @@
     open = false; # Maybe open to in the future, once
     nvidiaSettings = true;
     prime = {
-      sync.enable = true;
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+
+      };
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
-    };
-  };
-
-  # Create a OTG boot entry with GPU offload disabled
-  specialisation = {
-    on-the-go.configuration = {
-      system.nixos.tags = [ "on-the-go" ];
-      boot.kernelParams = [
-        #"split_lock_mitigate=0"
-        "split_lock_detect=off"
-        "i915.enable_psr=0"
-        "pcie_aspm=off"
-      ];
-      hardware.nvidia = {
-        prime.offload.enable = lib.mkForce true;
-       	prime.offload.enableOffloadCmd = lib.mkForce true;
-       	prime.sync.enable = lib.mkForce false;
-      };
     };
   };
 
