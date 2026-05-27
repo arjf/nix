@@ -122,32 +122,7 @@
   ];
 
   # FS
-
-  fileSystems."/" = {
-    #device = "/dev/disk/by-uuid/67965a9d-a137-4a9f-816b-5c1add1a69da"
-    #fsType = "btrfs";
-    options = [ "compress=zstd" ];
-  };
-
-
-  fileSystems."/home" = {
-    #device = "/dev/disk/by-uuid/67965a9d-a137-4a9f-816b-5c1add1a69da"
-    #fsType = "btrfs";
-    options = [ "compress=zstd" ];
-  };
-
-
-  fileSystems."/nix" = {
-    #device = "/dev/disk/by-uuid/67965a9d-a137-4a9f-816b-5c1add1a69da"
-    #fsType = "btrfs";
-    options = [ "compress=zstd" "noatime" ];
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/AA6A-89B3";
-    fsType = "vfat";
-  };
-
+  #
   fileSystems."/mnt/winstor" = {
     device = "/dev/disk/by-uuid/35DAEB472596A2F6";
     fsType = "ntfs3";
@@ -238,8 +213,6 @@
   #    extraOptions = [ "--loadavg-target" "5.0" ];
   #  };
   #};
-
-  swapDevices = [ {device = "/dev/disk/by-uuid/b1a3f251-18b2-4c03-ad42-775da7c7e5d2";} ];
 
   # Networking
 
@@ -357,7 +330,6 @@
   users.users.jo = {
     isNormalUser = true;
     description = "jo";
-    extraGroups = [ "networkmanager" "docker" "wheel" "libvirtd" "storage" ]; # Enable ‘sudo’ for the user.
     extraGroups = [
       "networkmanager"
       "docker"
