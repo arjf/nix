@@ -174,7 +174,7 @@
     device = "/dev/disk/by-uuid/5C12D51312D4F2CE";
     fsType = "ntfs3";
     options = [
-      "x-systemd.automount"
+      # "x-systemd.automount"
       "uid=1000"
       "nofail"
       "users"
