@@ -337,11 +337,31 @@
     ];
   };
 
+  # Home Manager
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+
+  home-manager.users.jo =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    {
+      home.stateVersion = "26.05";
+
+      imports = [
+        ./modules/zsh.nix
+      ];
+    };
+
   # Packages & Apps
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   programs.firefox.enable = true;
+  programs.zsh.enable = true;
 
   nixpkgs.config.allowUnfree = true;
   # Caused too much recompilation.
