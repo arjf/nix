@@ -299,6 +299,7 @@
   hardware.enableRedistributableFirmware = true;
   hardware.bluetooth.enable = true;
   hardware.nvidia-container-toolkit.enable = true;
+  hardware.uinput.enable = true;
   hardware.xone.enable = true;
   hardware.graphics = {
     enable = true;
@@ -642,7 +643,16 @@
 
   # Services
 
+  services.flatpak.enable = true;
   services.tailscale.enable = true;
+
+  # Sunshine
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+  };
 
   # Throttled daemon for managing intel CPUs
   services.throttled.enable = true;
