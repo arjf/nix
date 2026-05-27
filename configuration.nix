@@ -392,6 +392,14 @@
   # Ideally I enable cudaSupport per package
   # nixpkgs.config.cudaSupport = true;
 
+  programs.obs-studio = {
+    enable = true;
+    enableVirtualCamera = true;
+    plugins = with pkgs.obs-studio-plugins; [
+      droidcam-obs
+    ];
+  };
+
   # pkgs installed in system profile.
   # https://search.nixos.org
   environment.systemPackages = with pkgs; [
@@ -467,10 +475,53 @@
     vscode
     javaPackages.compiler.temurin-bin.jdk-25
     autoconf
-    micromamba
-    pixi
     qtscrcpy
     scrcpy
+    comma
+    distrobox
+    nodejs_latest
+    antigravity-fhs
+    gemini-cli-bin
+    claude-code
+    codex
+
+    # Nix
+    nixd
+    nil
+
+    # Python
+    micromamba
+    pixi
+
+    # C/C adjacent
+    gcc
+    gdb
+    cmake
+    pkg-config
+    gnumake
+
+    # General libs
+    openssl
+    openssl.dev
+    zlib
+    zlib.dev
+
+    # Crustacean
+    rustup # the lazy won
+    # cargo
+    # rustc
+    # rustfmt
+    # clippy
+    # rust-analyzer
+
+    # Go
+    go
+    gotools # utils, code fmt and IDE int
+    gopls # golang server
+    # go-tools # static-analysis and lint # included in golanci-lint
+    golangci-lint # paralel lint
+    # golangci-lint-langserver # redundant now
+    delve # debugger
 
     # Games
     heroic-unwrapped
@@ -514,9 +565,21 @@
     deskflow
     vesktop
     obsidian
+    droidcam
+    remmina
     kdePackages.krdc
     v4l-utils
+    materialgram
+    (inputs.zen-browser.packages."${pkgs.system}".beta.override {
+      extraPolicies = {
+        DisableAppUpdate = true;
+        DisableTelemetry = true;
+      };
+    })
     (pkgs.callPackage ./modules/thorium.nix { }).thorium-avx2
+    wpsoffice
+    onlyoffice-desktopeditors
+    libreoffice-qt
   ];
 
   programs.nix-ld.enable = true;
