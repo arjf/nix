@@ -295,6 +295,13 @@
     trusted-public-keys = [ "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" ];
   };
 
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 5d";
+  };
+  nix.settings.auto-optimise-store = true;
+
   # Hardware
   hardware.enableRedistributableFirmware = true;
   hardware.bluetooth.enable = true;
