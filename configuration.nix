@@ -354,9 +354,31 @@
     isNormalUser = true;
     description = "jo";
     extraGroups = [ "networkmanager" "docker" "wheel" "libvirtd" "storage" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "networkmanager"
+      "docker"
+      "wheel"
+      "libvirtd"
+      "storage"
+      "podman"
+      "uinput"
+    ];
+    shell = pkgs.zsh;
     packages = with pkgs; [
       tree
       kdePackages.kate
+    ];
+    subGidRanges = [
+      {
+        count = 65536;
+        startGid = 1000;
+      }
+    ];
+    subUidRanges = [
+      {
+        count = 65536;
+        startUid = 1000;
+      }
     ];
   };
 
@@ -480,12 +502,20 @@
     qemu
     waydroid-helper
     pkgs.android-tools
+    skopeo
+    guestfs-tools
+    virtiofsd
+    moonlight-qt
+    parsec-bin
+    looking-glass-client
 
     # Misc
     tailscale
     deskflow
     vesktop
     obsidian
+    kdePackages.krdc
+    v4l-utils
     (pkgs.callPackage ./modules/thorium.nix { }).thorium-avx2
   ];
 
@@ -512,19 +542,33 @@
   virtualisation.docker.daemon.settings.features.cdi = true;
 
   # VMs with libvirt
-  systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
+  # systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
   virtualisation.libvirtd = {
-   enable = true;
-   qemu = {
-     package = pkgs.qemu_kvm;
-     runAsRoot = true;
-     swtpm.enable = true;
-   };
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      runAsRoot = true;
+      swtpm.enable = true;
+      # ovmf = {
+      #   enable = true;
+      #   packages = [ pkgs.OVMFFull.fd ];
+      # };
+    };
   };
   virtualisation.libvirtd.qemu.vhostUserPackages = [ pkgs.virtiofsd ];
+  systemd.tmpfiles.rules = [
+    "f /dev/shm/looking-glass 0660 jo qemu-libvirtd -"
+  ];
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = false;
+    defaultNetwork.settings.dns_enabled = true;
+  };
 
   # Waydroid
   virtualisation.waydroid.enable = true;
+  virtualisation.waydroid.package = pkgs.waydroid-nftables;
   systemd.packages = [ pkgs.waydroid-helper ];
   systemd.services.waydroid-mount.wantedBy = [ "multi-user.target" ];
   services.geoclue2.enable = true;
