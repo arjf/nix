@@ -2,15 +2,21 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ inputs, config, lib, pkgs, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
-      inputs.nur.modules.nixos.default
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    inputs.home-manager.nixosModules.default
+    inputs.nur.modules.nixos.default
+  ];
 
   # Boot
 
@@ -189,7 +195,6 @@
   #   ];
   # };
 
-
   fileSystems."/mnt/w" = {
     device = "/dev/disk/by-uuid/5C12D51312D4F2CE";
     fsType = "ntfs3";
@@ -285,7 +290,6 @@
   # Enable KDE Plasma
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
-
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -403,7 +407,10 @@
 
   # Packages & Apps
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   programs.firefox.enable = true;
   programs.zsh.enable = true;
@@ -486,7 +493,14 @@
     protonup-qt
     protonup-rs
     protontricks
-    (prismlauncher.override { jdks = [ jdk8 jdk17 jdk21 jdk25 ]; })
+    (prismlauncher.override {
+      jdks = [
+        jdk8
+        jdk17
+        jdk21
+        jdk25
+      ];
+    })
     mangohud
 
     # Music & Media
@@ -522,10 +536,10 @@
   programs.nix-ld.enable = true;
 
   programs.nix-ld.libraries = with pkgs; [
-      stdenv.cc.cc.lib
-      zlib
-      glib
-    ];
+    stdenv.cc.cc.lib
+    zlib
+    glib
+  ];
 
   programs.steam = {
     enable = true;
@@ -594,17 +608,17 @@
   # };
 
   virtualisation.vmVariant = {
-      # following configuration is added only when building VM with build-vm
-      virtualisation = {
-        memorySize = 4096;
-        cores = 4;
-        graphics = true;
-      };
-      hardware.nvidia-container-toolkit.enable = lib.mkForce false;
-      #users.users.jo.initialPassword = "test";
-      users.users.jo.password = "test";
-      users.mutableUsers = false;
+    # following configuration is added only when building VM with build-vm
+    virtualisation = {
+      memorySize = 4096;
+      cores = 4;
+      graphics = true;
     };
+    hardware.nvidia-container-toolkit.enable = lib.mkForce false;
+    #users.users.jo.initialPassword = "test";
+    users.users.jo.password = "test";
+    users.mutableUsers = false;
+  };
 
   services.openssh.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 ];
