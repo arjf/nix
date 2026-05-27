@@ -21,6 +21,27 @@
         "type": "github"
       }
     },
+    "helium": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1779889258,
+        "narHash": "sha256-XeCJDbUCJMdRb8qKt2W9ybkxhZB1cz3VCzdkc42ZXMA=",
+        "owner": "arjf",
+        "repo": "helium-browser-nix-flake",
+        "rev": "55449674a11ba32667d4baa0aae14f89211f3efd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arjf",
+        "repo": "helium-browser-nix-flake",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -81,11 +102,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779866664,
-        "narHash": "sha256-YOsf3tdCwoNZHhK/28xVtiek4prqOMz5lWnmkQ7tJEU=",
+        "lastModified": 1779886105,
+        "narHash": "sha256-wmo0witzOtLYzB/GWn0ZsPyeg/mPTXI0q+Wus9Jni50=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "f3f382bef4b0011942ec69beeea52ad022ce1a7c",
+        "rev": "fa6b9f98166d45a8c5ca719bb133df6ff1bb41ad",
         "type": "github"
       },
       "original": {
@@ -96,11 +117,45 @@
     },
     "root": {
       "inputs": {
+        "helium": "helium",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-lts": "nixpkgs-lts",
         "nur": "nur",
         "zen-browser": "zen-browser"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
       }
     },
     "zen-browser": {

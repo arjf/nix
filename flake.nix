@@ -19,6 +19,10 @@
         home-manager.follows = "home-manager";
       };
     };
+    helium = {
+      url = "github:arjf/helium-browser-nix-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

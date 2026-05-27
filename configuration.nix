@@ -585,6 +585,7 @@
       };
     })
     (pkgs.callPackage ./modules/thorium.nix { }).thorium-avx2
+    inputs.helium.packages.${system}.default
     wpsoffice
     onlyoffice-desktopeditors
     libreoffice-qt
