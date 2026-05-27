@@ -414,6 +414,20 @@
     lshw
     pciutils
     nvtopPackages.full
+    ncdu
+    usbutils
+    fzf
+    parted
+    asdf-vm
+    ripgrep
+    atuin
+    nmap
+
+    # Nvim deps
+    lazygit
+    gdu
+    bottom
+    gdu
 
     # System
     btrfs-progs
