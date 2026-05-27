@@ -18,11 +18,26 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [
-    #"split_lock_mitigate=0"
     "split_lock_detect=off"
-    "pcie_aspm=off"
-    "i915.force_probe=!9a68"
-    "xe.force_probe=9a68"
+    # "split_lock_detect=warn"
+    # "pcie_aspm=off"
+
+    # Xe module for iGPU
+    # "xe.force_probe=9a68"
+    # "xe.enable_psr=0"
+    # "xe.enable_fbc=0"
+    "nvidia.NVreg_TemporaryFilePath=/var/tmp"
+
+    # i915 module for iGPU
+    "i915.force_probe=9a68"
+    "i915.enable_psr=0"
+    "i915.enable_guc=3"
+    "i915.reset=3"
+    "i915.enable_fbc=1"
+    "intel_iommu=igfx_off"
+
+    "panic=10"
+    "oops=panic"
   ];
 
   # Emulated architectures
@@ -33,33 +48,39 @@
 
   # Sysctl
   boot.kernel.sysctl = {
-    "vm.swappiness" = 10;
-    "vm.dirty_byes" = 268435456;
+    # "vm.swappiness" = 60;
+    "vm.dirty_bytes" = 268435456;
     "vm.dirty_background_bytes" = 134217728;
+    "kernel.split_lock_mitigate" = 0;
+    "vm.transparent_hugepage" = "madvise";
   };
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelModules = [ "msi-ec" ];
-  boot.extraModprobeConfig = "options kvm_intel nested=1";
-  
-  boot.initrd.luks.cryptoModules = [
-    "aes"
-    # "aes_generic"
-    "blowfish"
-    "twofish"
-    "serpent"
-    "cbc"
-    "xts"
-    "lrw"
-    "sha1"
-    "sha256"
-    "sha512"
-    "af_alg"
-    "algif_skcipher"
-    "cryptd"
-    "input_leds" # for capslock LED on most keyboards in case decryption requires password
+  boot.kernelPackages = pkgs.linuxPackages_7_0;
+  boot.kernelModules = [
+    "nvidia"
+    # "nvidiafb"
+    "nvidia_modeset"
+    "nvidia_uvm"
+    "nvidia_drm"
+    "i915"
+    "msi-ec"
+    "acpi_ec"
+    "ec_sys"
+    "v4l2loopback"
+    "snd-aloop"
   ];
+
+  boot.extraModprobeConfig = ''
+    options nvidia_drm fbdev=1
+    options acpi_ec write_support=1
+    options iwlwifi power_save=0
+    options iwlmvm power_scheme=1
+    options kvm_intel nested=1
+    options kvm_intel emulate_invalid_guest_state=0
+    options kvm ignore_msrs=1 report_ignored_msrs=0
+    options nvidia NVreg_TemporaryFilePath=/var/tmp
+  '';
 
   boot.initrd.kernelModules = [
     "dm-snapshot"
@@ -67,7 +88,10 @@
     "dm-cache-default"
   ];
 
-  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/41f6c891-cf99-4d0f-9ff8-7438dcaba239";
+  boot.blacklistedKernelModules = [ "xe" ];
+
+  boot.initrd.luks.devices."cryptroot".device =
+    "/dev/disk/by-uuid/41f6c891-cf99-4d0f-9ff8-7438dcaba239";
   boot.supportedFilesystems = [ "ntfs" ];
 
   # This is a hacky way of running a newer version of msi-ec which supports my fw
@@ -88,6 +112,7 @@
         echo -e '\nmodules_install:\n\t$(MAKE) -C $(KERNELDIR) M=$(CURDIR) modules_install' >> Makefile
       '';
     }))
+    config.boot.kernelPackages.v4l2loopback
   ];
 
   # FS
@@ -253,7 +278,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.videoDrivers = [
-    "modesetting"
+    # "modesetting"
     "nvidia"
   ];
 
@@ -304,20 +329,18 @@
   };
 
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     modesetting.enable = true;
-    powerManagement.enable = true;
+    powerManagement.enable = false;
     powerManagement.finegrained = false;
-    open = false; # Maybe open to in the future, once
+    open = false;
     nvidiaSettings = true;
     prime = {
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-
-      };
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
+      sync.enable = false;
+      offload.enable = true;
+      intelBusId = "PCI:0@0:2:0";
+      nvidiaBusId = "PCI:1@0:0:0";
+      offload.enableOffloadCmd = true;
     };
   };
 
