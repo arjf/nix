@@ -463,6 +463,7 @@
     deskflow
     vesktop
     obsidian
+    (pkgs.callPackage ./modules/thorium.nix { }).thorium-avx2
   ];
 
   programs.nix-ld.enable = true;
