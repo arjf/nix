@@ -1,5 +1,5 @@
 {
-  description = "Lament System flake";
+  description = "Nixy System flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -28,7 +28,7 @@
   outputs =
     { self, nixpkgs, ... }@inputs:
     let
-      hostname = "lament";
+      hostname = "nixy";
     in
     {
       nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
