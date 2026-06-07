@@ -25,23 +25,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [
     "split_lock_detect=off"
-    # "split_lock_detect=warn"
-    # "pcie_aspm=off"
-
-    # Xe module for iGPU
-    # "xe.force_probe=9a68"
-    # "xe.enable_psr=0"
-    # "xe.enable_fbc=0"
-    "nvidia.NVreg_TemporaryFilePath=/var/tmp"
-
-    # i915 module for iGPU
-    "i915.force_probe=9a68"
-    "i915.enable_psr=0"
-    "i915.enable_guc=3"
-    "i915.reset=3"
-    "i915.enable_fbc=1"
-    "intel_iommu=igfx_off"
-
     "panic=10"
     "oops=panic"
   ];
@@ -62,15 +45,8 @@
   };
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_7_0;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [
-    "nvidia"
-    # "nvidiafb"
-    "nvidia_modeset"
-    "nvidia_uvm"
-    "nvidia_drm"
-    "i915"
-    "msi-ec"
     "acpi_ec"
     "ec_sys"
     "v4l2loopback"
@@ -78,14 +54,10 @@
   ];
 
   boot.extraModprobeConfig = ''
-    options nvidia_drm fbdev=1
     options acpi_ec write_support=1
     options iwlwifi power_save=0
     options iwlmvm power_scheme=1
-    options kvm_intel nested=1
-    options kvm_intel emulate_invalid_guest_state=0
-    options kvm ignore_msrs=1 report_ignored_msrs=0
-    options nvidia NVreg_TemporaryFilePath=/var/tmp
+    options kvm_amd nested=1
   '';
 
   boot.initrd.kernelModules = [
@@ -94,52 +66,15 @@
     "dm-cache-default"
   ];
 
-  boot.blacklistedKernelModules = [ "xe" ];
-
-  boot.initrd.luks.devices."cryptroot".device =
-    "/dev/disk/by-uuid/41f6c891-cf99-4d0f-9ff8-7438dcaba239";
   boot.supportedFilesystems = [ "ntfs" ];
 
-  # This is a hacky way of running a newer version of msi-ec which supports my fw
-  # Adapting the patches from the nixos-pkg
   boot.extraModulePackages = [
-    (config.boot.kernelPackages.msi-ec.overrideAttrs (oldAttrs: {
-      src = pkgs.fetchFromGitHub {
-        owner = "BeardOverflow";
-        repo = "msi-ec";
-        rev = "ffb36db8ae28a520dd570f56735de49845106e0e";
-        sha256 = "sha256-MdFue0buh/8yE4lIdEbLa11pkwfRFvQ6VIU9mZM3hDo=";
-      };
-      patches = [ ];
-      postPatch = ''
-        # Replace the hardcoded paths
-        # Append the modules_install target - required by Nixpkgs
-        sed -i 's|/lib/modules/[^/]*/build|$(KERNELDIR)|g' Makefile
-        echo -e '\nmodules_install:\n\t$(MAKE) -C $(KERNELDIR) M=$(CURDIR) modules_install' >> Makefile
-      '';
-    }))
     config.boot.kernelPackages.v4l2loopback
   ];
 
   # FS
-  #
-  fileSystems."/mnt/winstor" = {
-    device = "/dev/disk/by-uuid/35DAEB472596A2F6";
-    fsType = "ntfs3";
-    options = [
-      "nofail"
-      "users"
-      "force"
-      "fmask=0022"
-      "dmask=0022"
-      "exec"
-      "rw"
-      "uid=1000"
-    ];
-  };
-
   fileSystems."/mnt/windows" = {
-    device = "/dev/disk/by-uuid/5CDAC3B2DAC3872C";
+    device = "/dev/disk/by-uuid/DCC6FCF8C6FCD3AC";
     fsType = "ntfs3";
     options = [
       "nofail"
@@ -153,50 +88,6 @@
     ];
   };
 
-  # Mount points for external HDD
-  # still regret choosing exfat to this day
-  # fileSystems."/mnt/arnav" = {
-  #   device = "/dev/disk/by-uuid/DE82-04C5";
-  #   fsType = "exfat";
-  #   options = [
-  #     "x-systemd.automount"
-  #     "uid=1000"
-  #     "nofail"
-  #     "users"
-  #     "fmask=0022"
-  #     "dmask=0022"
-  #     "exec"
-  #     "rw"
-  #   ];
-  # };
-
-  fileSystems."/mnt/w" = {
-    device = "/dev/disk/by-uuid/5C12D51312D4F2CE";
-    fsType = "ntfs3";
-    options = [
-      # "x-systemd.automount"
-      "uid=1000"
-      "nofail"
-      "users"
-      "force"
-      "fmask=0022"
-      "dmask=0022"
-      "exec"
-      "rw"
-    ];
-  };
-
-  # fileSystems."/home/jo/w" = {
-  #   device = "/mnt/w";
-  #   fsType = "none";
-  #   #depends = [ "/mnt/w" ];
-  #   options = [
-  #     "bind"
-  #     "nofail"
-  #     "x-systemd.automount"
-  #     "x-systemd.requiresMountsFor=/mnt/w"
-  #   ];
-  # };
 
   services.btrfs.autoScrub.enable = true;
   services.btrfs.autoScrub.interval = "weekly";
@@ -216,7 +107,7 @@
 
   # Networking
 
-  networking.hostName = "lament"; # Define your hostname.
+  networking.hostName = "nixy"; # Define your hostname.
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
@@ -256,8 +147,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.videoDrivers = [
-    # "modesetting"
-    "nvidia"
+    "modesetting"
   ];
 
   # Enable KDE Plasma
@@ -290,10 +180,10 @@
   };
 
   # Cuda package cache lists & keys
-  nix.settings = {
-    substituters = [ "https://cache.nixos-cuda.org" ];
-    trusted-public-keys = [ "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" ];
-  };
+  #nix.settings = {
+  #  substituters = [ "https://cache.nixos-cuda.org" ];
+  #  trusted-public-keys = [ "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" ];
+  # };
 
   nix.gc = {
     automatic = true;
@@ -305,28 +195,12 @@
   # Hardware
   hardware.enableRedistributableFirmware = true;
   hardware.bluetooth.enable = true;
-  hardware.nvidia-container-toolkit.enable = true;
+  # hardware.nvidia-container-toolkit.enable = true;
   hardware.uinput.enable = true;
   hardware.xone.enable = true;
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-  };
-
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-    prime = {
-      sync.enable = false;
-      offload.enable = true;
-      intelBusId = "PCI:0@0:2:0";
-      nvidiaBusId = "PCI:1@0:0:0";
-      offload.enableOffloadCmd = true;
-    };
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -450,8 +324,6 @@
     cryptsetup
     lvm2
     dosfstools
-    throttled
-    mcontrolcenter
     sof-firmware
     pavucontrol
     wl-clipboard
@@ -611,7 +483,7 @@
 
   # Docker
   virtualisation.docker.enable = true;
-  virtualisation.docker.daemon.settings.features.cdi = true;
+  # virtualisation.docker.daemon.settings.features.cdi = true;
 
   # VMs with libvirt
   # systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
@@ -663,8 +535,8 @@
   };
 
   # Throttled daemon for managing intel CPUs
-  services.throttled.enable = true;
-  services.throttled.extraConfig = builtins.readFile ./etc/throttled.conf;
+  # services.throttled.enable = true;
+  # services.throttled.extraConfig = builtins.readFile ./etc/throttled.conf;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -681,7 +553,7 @@
       cores = 4;
       graphics = true;
     };
-    hardware.nvidia-container-toolkit.enable = lib.mkForce false;
+    # hardware.nvidia-container-toolkit.enable = lib.mkForce false;
     #users.users.jo.initialPassword = "test";
     users.users.jo.password = "test";
     users.mutableUsers = false;
