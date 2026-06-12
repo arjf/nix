@@ -30,24 +30,12 @@
       ];
       theme = "robbyrussell";
     };
-    zplug = {
-      enable = true;
-      plugins = [
-        # {
-        #   name = "romkatv/powerlevel10k";
-        #   tags = [
-        #     "as:theme"
-        #     "depth:1"
-        #   ];
-        # }
-      ];
-    };
     plugins = [
       {
         name = "nix-zsh-completions";
         src = pkgs.nix-zsh-completions;
         file = "share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh";
-        completions = [ "share/zsh/site-functions" ];
+        functions = [ "share/zsh/site-functions" ];
       }
       {
         name = "vi-mode";
@@ -105,8 +93,5 @@
         fi
       ''
     ];
-    # sessionVariables = {
-    #   RPROMPT = "";
-    # };
   };
 }

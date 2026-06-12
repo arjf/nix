@@ -1,5 +1,5 @@
 {
-  description = "Lament System flake";
+  description = "Jo's systems flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -28,14 +28,23 @@
   outputs =
     { self, nixpkgs, ... }@inputs:
     let
-      hostname = "lament";
+      inherit (nixpkgs.lib) nixosSystem;
+
+      mkHost =
+        hostname:
+        nixosSystem {
+          specialArgs = { inherit inputs hostname; };
+          modules = [
+            ./configuration.nix
+            ./hosts/${hostname}
+          ];
+        };
     in
     {
-      nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./configuration.nix
-        ];
+      nixosConfigurations = {
+        default = mkHost "default";
+        lament = mkHost "lament";
+        nixy = mkHost "nixy";
       };
     };
 }

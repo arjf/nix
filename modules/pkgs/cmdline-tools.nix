@@ -1,0 +1,36 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  environment.systemPackages = with pkgs; [
+    wget
+    curl
+    btop
+    bat
+    nethogs
+    iotop
+    net-tools
+    binutils
+    util-linux
+    unzip
+    screen
+    tmux
+    rsync
+    coreutils
+    lshw
+    pciutils
+    nvtopPackages.full
+    ncdu
+    usbutils
+    fzf
+    parted
+    asdf-vm
+    ripgrep
+    atuin
+    nmap
+    tree
+  ];
+}

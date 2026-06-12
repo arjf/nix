@@ -28,40 +28,6 @@
   ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/mapper/vg-root";
-    fsType = "btrfs";
-    options = [ "compress=none" ];
-  };
-
-  fileSystems."/home" = {
-    device = "/dev/mapper/vg-root";
-    fsType = "btrfs";
-    options = [ "subvol=home" ];
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/AA6A-89B3";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
-  };
-
-  fileSystems."/nix" = {
-    device = "/dev/mapper/vg-root";
-    fsType = "btrfs";
-    options = [
-      "subvol=nix"
-      "compress=none"
-    ];
-  };
-
-  swapDevices = [
-    { device = "/dev/disk/by-uuid/b1a3f251-18b2-4c03-ad42-775da7c7e5d2"; }
-  ];
-
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
