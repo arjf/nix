@@ -1,10 +1,14 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   imports = [
     ./tailscale.nix
     ./flatpak.nix
-    ./cuda.nix
     ./kdeconnect.nix
-    ./throttled.nix
   ];
 
   services.printing.enable = lib.mkDefault true;
