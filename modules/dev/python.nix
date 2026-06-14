@@ -10,4 +10,6 @@
     micromamba
     pixi
   ];
+
+  my.pathAdditions = [ "$HOME/.pixi/bin" ];
 }
