@@ -5,6 +5,10 @@
 ├── flake.nix                          # Entry point - inputs, outputs, mkHost helper
 ├── flake.lock                         # Locked flake inputs
 ├── configuration.nix                  # Thin root: 3 imports + stateVersion default
+├── .sops.yaml                         # SOPS encryption rules (PGP key + host age keys)
+├── secrets.yaml                       # Encrypted SOPS secret store (root-level defaults)
+├── secrets/                           # Per-context encrypted secrets (future)
+│   └── .gitkeep
 │
 ├── hosts/                             # Machine-specific config (one dir per host)
 │   ├── default/                       # Minimal test profile (tmpfs root)
@@ -33,9 +37,12 @@
 │   │   ├── locale.nix                 # Timezone, language, locale settings
 │   │   ├── users.nix                  # User accounts and groups
 │   │   ├── nix.nix                    # Nix daemon settings (GC, features)
+│   │   ├── shell.nix                  # my.pathAdditions option for cross-module PATH
 │   │   ├── btrfs.nix                  # Btrfs auto-scrub (opt-in by hosts)
 │   │   ├── lvm.nix                    # LVM initrd modules (opt-in by hosts)
 │   │   ├── luks.nix                   # LUKS skeleton (opt-in, mkDefault UUID)
+│   │   ├── secure-boot.nix            # Lanzaboote secure boot (host-opt-in)
+│   │   ├── snapshots.nix              # Snapper btrfs snapshots + 30d auto-GC (host-opt-in)
 │   │   └── vm-variant.nix             # Build VM overrides
 │   │
 │   ├── hardware/                      # Hardware capabilities
@@ -46,13 +53,14 @@
 │   │   ├── wifi.nix                   # WiFi power management
 │   │   ├── ec.nix                     # ACPI EC modules (acpi_ec, ec_sys)
 │   │   ├── xone.nix                   # Xbox One controller driver
-│   │   ├── msi.nix                    # MSI laptop EC (msi-ec kmod) - host-opt-in
+│   │   ├── msi.nix                    # MSI laptop EC (msi-ec kmod via overrideAttrs) - host-opt-in
 │   │   ├── i915.nix                   # Intel i915 GPU params - host-opt-in
 │   │   ├── nvidia.nix                 # NVIDIA GPU (modesetting, prime) - host-opt-in
 │   │   └── v4l2lo.nix                 # v4l2loopback - pulled by obs-studio
 │   │
 │   ├── services/                      # Optional system services
-│   │   ├── default.nix                # Aggregates siblings
+│   │   ├── default.nix                # Aggregates siblings (printing, gvfs, udisks2)
+│   │   ├── sops.nix                   # SOPS secret management (sops-nix import + secrets.yaml)
 │   │   ├── tailscale.nix              # Tailscale VPN
 │   │   ├── flatpak.nix                # Flatpak support
 │   │   ├── cuda.nix                   # CUDA cache substituters
@@ -77,7 +85,7 @@
 │   │   ├── nix-ld.nix                 # Nix LD (dynamic linker for binaries)
 │   │   ├── obs-studio.nix             # OBS Studio (pulls v4l2lo)
 │   │   ├── zsh.nix                    # NixOS-level zsh enable
-│   │   ├── cmdline-tools.nix          # CLI utilities (btop, ripgrep, etc.)
+│   │   ├── cmdline-tools.nix          # CLI utilities (btop, ripgrep, fzf, lsd, fastfetch, etc.)
 │   │   ├── term-emus.nix              # Terminal emulators (alacritty, kitty)
 │   │   ├── security.nix               # Security tools (gnupg, keepassxc, etc.)
 │   │   ├── games.nix                  # Gaming (steam, heroic, gamemode, prismlauncher)
@@ -102,17 +110,13 @@
 │   ├── user/                          # Home-manager user config
 │   │   ├── default.nix                # Aggregates home-manager modules
 │   │   ├── home.nix                   # Home-manager wrapper + user entry
-│   │   └── zsh.nix                    # ZSH user config (oh-my-zsh, plugins)
+│   │   └── zsh.nix                    # ZSH user config (oh-my-zsh, plugins, aliases, fzf, fastfetch)
 │   │
 │   └── derivations/                   # In-repo package derivations
-│       ├── msi-ec.nix                 # MSI EC kernel module (fetchFromGitHub)
 │       └── thorium.nix                # Thorium browser AppImage wrapper
 │
 ├── overrides/                         # Sharable machine-specific overrides
 │   └── bose-soundbar.nix              # Bose soundbar wireplumber config
-│
-├── etc/                               # Config files overlaid into /etc/ on build
-│   └── throttled.conf                 # Intel CPU throttling daemon config
 │
 ├── tools/
 │   └── bin/
@@ -147,7 +151,9 @@ flake.nix
               │     ├── networking.nix
               │     ├── locale.nix
               │     ├── users.nix
-              │     └── nix.nix
+              │     ├── nix.nix
+              │     ├── shell.nix
+              │     └── vm-variant.nix
               ├── hardware/default.nix
               │     ├── audio.nix
               │     ├── bluetooth.nix
@@ -156,11 +162,11 @@ flake.nix
               │     ├── ec.nix
               │     └── xone.nix
               ├── services/default.nix
+              │     ├── sops.nix
               │     ├── tailscale.nix
               │     ├── flatpak.nix
-              │     ├── cuda.nix
               │     ├── kdeconnect.nix
-              │     └── throttled.nix
+              │     └── ssh.nix
               ├── desktop/default.nix
               │     ├── sddm.nix
               │     └── plasma.nix
@@ -205,8 +211,12 @@ flake.nix
     ├── core/lvm.nix       (lament only)
     ├── core/luks.nix      (lament only)
     ├── core/btrfs.nix
+    ├── core/secure-boot.nix
+    ├── core/snapshots.nix
     ├── hardware/msi.nix   (lament only)
     ├── hardware/i915.nix  (lament only)
     ├── hardware/nvidia.nix (lament only)
+    ├── services/cuda.nix  (lament only)
+    ├── services/throttled.nix (lament only)
     └── overrides/bose-soundbar.nix  (lament only)
 ```
