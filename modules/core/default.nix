@@ -7,5 +7,6 @@
     ./users.nix
     ./nix.nix
     ./vm-variant.nix
+    ./shell.nix
   ];
 }
