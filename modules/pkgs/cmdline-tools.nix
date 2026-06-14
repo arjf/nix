@@ -2,9 +2,11 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 {
+
   environment.systemPackages = with pkgs; [
     wget
     curl
@@ -26,11 +28,15 @@
     ncdu
     usbutils
     fzf
+    lsd
+    fastfetch
     parted
     asdf-vm
     ripgrep
     atuin
     nmap
     tree
+    nix-output-monitor
+    inputs.nix-your-shell.packages.${pkgs.system}.nix-your-shell
   ];
 }
