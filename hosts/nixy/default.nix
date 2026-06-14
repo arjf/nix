@@ -10,6 +10,8 @@
     ./hardware.nix
     ./filesystems.nix
     ../../modules/core/btrfs.nix
+    ../../modules/core/secure-boot.nix
+    ../../modules/core/snapshots.nix
   ];
 
   system = {
@@ -17,11 +19,4 @@
     stateVersion = lib.mkForce "25.11";
   };
 
-  # Sunshine
-  services.sunshine = {
-    enable = true;
-    autoStart = true;
-    capSysAdmin = true;
-    openFirewall = true;
-  };
 }

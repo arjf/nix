@@ -19,6 +19,8 @@
     ../../modules/services/cuda.nix
     ../../modules/services/throttled.nix
     ../../overrides/bose-soundbar.nix
+    ../../modules/core/secure-boot.nix
+    ../../modules/core/snapshots.nix
   ];
 
   system = {
