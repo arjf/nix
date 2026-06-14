@@ -9,12 +9,13 @@
     ./tailscale.nix
     ./flatpak.nix
     ./kdeconnect.nix
+    ./sops.nix
+    ./ssh.nix
+    ./sunshine.nix
   ];
 
   services.printing.enable = lib.mkDefault true;
 
-  services.openssh.enable = lib.mkDefault true;
-  networking.firewall.allowedTCPPorts = lib.mkDefault [ 22 ];
 
   services.gvfs.enable = lib.mkDefault true;
   services.udisks2.enable = lib.mkDefault true;
