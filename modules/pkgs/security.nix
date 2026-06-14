@@ -12,5 +12,6 @@
     keepassxc
     keybase-gui
     keybase
+    kbfs
   ];
 }
