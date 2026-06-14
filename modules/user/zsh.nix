@@ -2,8 +2,12 @@
   config,
   lib,
   pkgs,
+  my,
   ...
 }:
+let
+  pathExtra = lib.concatStringsSep ":" ([ "$HOME/bin" ] ++ my.pathAdditions);
+in
 {
   programs.zsh = {
     enable = true;
@@ -22,11 +26,13 @@
       share = true;
     };
     oh-my-zsh = {
-      # omz without Home Manager
       enable = true;
       plugins = [
         "git"
-        "thefuck"
+        "aws"
+        "kubectl"
+        "docker"
+        "asdf"
       ];
       theme = "robbyrussell";
     };
@@ -70,12 +76,32 @@
                 "${config.home.profileDirectory}"/share/zsh/vendor-completions)
       '')
       ''
+        export PATH="${pathExtra}:$PATH"
+
+        # Aliases
+        alias ls='lsd'
+        alias l='ls -l'
+        alias la='ls -a'
+        alias lla='ls -la'
+        alias lt='ls --tree'
+        alias kys="shutdown now"
+        alias respring="systemctl reboot"
+        alias db="distrobox"
+
+        eval "$(atuin init zsh)" 2>/dev/null || true
+
+        export MAMBA_ROOT_PREFIX="$HOME/micromamba"
+        eval "$(micromamba shell hook --shell=zsh)" 2>/dev/null || true
+
+        # FZF shell integration (key bindings: CTRL-R, CTRL-T, ALT-C)
+        source <(fzf --zsh) 2>/dev/null || true
+
         bindkey "''${terminfo[kcuu1]}" history-substring-search-up
         bindkey '^[[A' history-substring-search-up
         bindkey "''${terminfo[kcud1]}" history-substring-search-down
         bindkey '^[[B' history-substring-search-down
 
-        ${pkgs.nix-your-shell}/bin/nix-your-shell --nom zsh | source /dev/stdin
+        ${pkgs.nix-your-shell}/bin/nix-your-shell -- zsh | source /dev/stdin
 
         bindkey "''${terminfo[khome]}" beginning-of-line
         bindkey "''${terminfo[kend]}" end-of-line
@@ -85,12 +111,27 @@
         bindkey "^[[1;5D" backward-word
         bindkey "^[[1;3D" backward-word
 
+        # SSH key loading
+        if ! ssh-add -l >/dev/null 2>&1; then
+          for k in ~/.ssh/id_ed25519 ~/.ssh/id_rsa ~/.ssh/id_ecdsa ~/.ssh/identity; do
+            [ -f "$k" ] && ssh-add "$k" 2>/dev/null || true
+          done
+        fi
+
+        # Environment variables
+        export DBX_CONTAINER_MANAGER="docker"
+        export cons=~/clones/docker/containers
+        export vols=~/clones/docker/volumes
+
         local CONST_SSH_SOCK="$HOME/.ssh/ssh-auth-sock"
         if [ ! -z ''${SSH_AUTH_SOCK+x} ] && [ "$SSH_AUTH_SOCK" != "$CONST_SSH_SOCK" ]; then
           rm -f "$CONST_SSH_SOCK"
           ln -sf "$SSH_AUTH_SOCK" "$CONST_SSH_SOCK"
           export SSH_AUTH_SOCK="$CONST_SSH_SOCK"
         fi
+
+        # System info on startup
+        ${pkgs.fastfetch}/bin/fastfetch 2>/dev/null || true
       ''
     ];
   };

@@ -1,5 +1,12 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   imports = [
     ./zsh.nix
+    ./discord.nix
   ];
 }
