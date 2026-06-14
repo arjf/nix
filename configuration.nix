@@ -343,8 +343,8 @@
     keybase
 
     # Cuda
-    cudaPackages.cudnn
-    cudaPackages.cudatoolkit
+    #cudaPackages.cudnn
+    #cudaPackages.cudatoolkit
 
     # Dev
     docker
