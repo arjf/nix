@@ -88,8 +88,6 @@ in
         alias respring="systemctl reboot"
         alias db="distrobox"
 
-        eval "$(atuin init zsh)" 2>/dev/null || true
-
         export MAMBA_ROOT_PREFIX="$HOME/micromamba"
         eval "$(micromamba shell hook --shell=zsh)" 2>/dev/null || true
 
@@ -134,5 +132,8 @@ in
         ${pkgs.fastfetch}/bin/fastfetch 2>/dev/null || true
       ''
     ];
+    initExtra = ''
+      eval "$(atuin init zsh)" 2>/dev/null || true
+    '';
   };
 }
