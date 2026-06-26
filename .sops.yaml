@@ -1,8 +1,9 @@
 keys:
-  - &arjf 24650170F1319CE57856B4D0A2053B74E1C7FC25
+  - &users age1hdgt7jkjlqs49l6k4tu4vlwk99qrrpcg082n89ljva5smaxscpzqhs29tu
+  - &root 24650170F1319CE57856B4D0A2053B74E1C7FC25
 creation_rules:
-  - path_regex: secrets/.*
-    key_groups:
-      - pgp:
-          - *arjf
-  - pgp: "24650170F1319CE57856B4D0A2053B74E1C7FC25"
+  - key_groups:
+    - age:
+      - *users
+      pgp:
+      - *root

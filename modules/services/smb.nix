@@ -35,13 +35,11 @@ in
       enable = true;
       nmbd.enable = false;
       winbindd.enable = false;
-      openFirewall = false;
+      openFirewall = true;
       settings = {
         global = {
           "server min protocol" = "SMB3_11";
           "server max protocol" = "SMB3_11";
-          interfaces = "tailscale0";
-          "bind interfaces only" = "yes";
           security = "user";
           "passdb backend" = "tdbsam";
         };
@@ -55,14 +53,12 @@ in
       };
     };
 
-    systemd.services.samba-smbd.after = [ "tailscaled.service" ];
-
     users.users.${cfg.userName}.extraGroups = [ "samba" ];
 
     systemd.services.samba-password-setup = mkIf (cfg.passwordFile != null) {
       description = "Set Samba password for ${cfg.userName}";
-      after = [ "samba-smbd.service" ];
-      wantedBy = [ "samba-smbd.service" ];
+      before = [ "samba-smbd.service" ];
+      wantedBy = [ "samba.target" ];
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
