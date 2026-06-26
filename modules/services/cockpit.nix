@@ -6,13 +6,15 @@
 
   services.cockpit = lib.mkDefault {
     enable = true;
-    openFirewall = true;
+    openFirewall = false;
     settings = {
       WebService = {
         LoginTo = false;
       };
     };
   };
+
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 9090 ];
 
   services.tailscale.enable = lib.mkForce true;
 }
