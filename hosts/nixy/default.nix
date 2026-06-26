@@ -21,7 +21,10 @@
     passwordFile = config.sops.secrets.smb-password.path;
   };
 
-  services.cockpit.enable = true;
+  services.cockpit = {
+    enable = true;
+    "allowed-origins" = [ "https://${hostname}:9090" ];
+  };
 
   system = {
     host = lib.mkForce hostname;
