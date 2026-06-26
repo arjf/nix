@@ -65,7 +65,9 @@ in
       };
       script = ''
         if ! ${pkgs.samba}/bin/pdbedit -L "${cfg.userName}" 2>/dev/null; then
-          ${pkgs.samba}/bin/smbpasswd -a -s "${cfg.userName}" < "${cfg.passwordFile}"
+          PASS=$(${pkgs.coreutils}/bin/cat "${cfg.passwordFile}")
+          ${pkgs.coreutils}/bin/printf "%s\n%s\n" "$PASS" "$PASS" | \
+            ${pkgs.samba}/bin/smbpasswd -a -s "${cfg.userName}"
         fi
       '';
     };
