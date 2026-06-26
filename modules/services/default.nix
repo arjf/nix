@@ -12,6 +12,8 @@
     ./sops.nix
     ./ssh.nix
     ./sunshine.nix
+    ./cockpit.nix
+    ./smb.nix
   ];
 
   services.printing.enable = lib.mkDefault true;
