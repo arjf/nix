@@ -38,5 +38,6 @@
     tree
     nix-output-monitor
     inputs.nix-your-shell.packages.${pkgs.system}.nix-your-shell
+    sops
   ];
 }
