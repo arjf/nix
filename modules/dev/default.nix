@@ -16,6 +16,7 @@
     ./editors.nix
     ./gen-tools.nix
     ./vcs.nix
+    ./aws.nix
   ];
 
   environment.systemPackages = with pkgs; [
