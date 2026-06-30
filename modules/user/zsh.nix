@@ -129,8 +129,8 @@ in
           export SSH_AUTH_SOCK="$CONST_SSH_SOCK"
         fi
 
-        # System info on startup
-        ${pkgs.fastfetch}/bin/fastfetch 2>/dev/null || true
+        # System info on startup (disabled)
+        # ${pkgs.fastfetch}/bin/fastfetch 2>/dev/null || true
       ''
     ];
   };
