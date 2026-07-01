@@ -1,9 +1,11 @@
 keys:
   - &users age1hdgt7jkjlqs49l6k4tu4vlwk99qrrpcg082n89ljva5smaxscpzqhs29tu
+  - &lament age1cq82k7hrka2dmrr9e3ggjr9l9wa0r4zmqukc53shxetnda9n2utsq966q0
   - &root 24650170F1319CE57856B4D0A2053B74E1C7FC25
 creation_rules:
   - key_groups:
     - age:
       - *users
+      - *lament
       pgp:
       - *root
