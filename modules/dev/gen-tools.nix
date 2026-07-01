@@ -12,5 +12,10 @@
     codex
     opencode
     opencode-desktop
+    windsurf
+    devin-cli
+    cursor-cli
+    code-cursor-fhs
+    antigravity-fhs
   ];
 }

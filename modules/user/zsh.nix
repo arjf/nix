@@ -94,10 +94,9 @@ in
         # FZF shell integration (key bindings: CTRL-R, CTRL-T, ALT-C)
         source <(fzf --zsh) 2>/dev/null || true
 
-        bindkey "''${terminfo[kcuu1]}" history-substring-search-up
-        bindkey '^[[A' history-substring-search-up
-        bindkey "''${terminfo[kcud1]}" history-substring-search-down
-        bindkey '^[[B' history-substring-search-down
+        # Up arrow handled by atuin init above
+        bindkey "''${terminfo[kcud1]}" down-line-or-history
+        bindkey '^[[B' down-line-or-history
 
         ${pkgs.nix-your-shell}/bin/nix-your-shell -- zsh | source /dev/stdin
 
@@ -128,8 +127,8 @@ in
           export SSH_AUTH_SOCK="$CONST_SSH_SOCK"
         fi
 
-        # System info on startup
-        ${pkgs.fastfetch}/bin/fastfetch 2>/dev/null || true
+        # System info on startup (disabled)
+        # ${pkgs.fastfetch}/bin/fastfetch 2>/dev/null || true
       ''
     ];
     initExtra = ''

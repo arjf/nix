@@ -8,5 +8,6 @@
   imports = [
     ./zsh.nix
     ./discord.nix
+    ./neovim.nix
   ];
 }
