@@ -6,7 +6,7 @@
   ...
 }:
 let
-  pathExtra = lib.concatStringsSep ":" ([ "$HOME/bin" ] ++ my.pathAdditions);
+  pathExtra = lib.concatStringsSep ":" ([ "$HOME/bin" "$HOME/.npm-packages/bin" ] ++ my.pathAdditions);
 in
 {
   programs.zsh = {
