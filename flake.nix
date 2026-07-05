@@ -52,6 +52,15 @@
       url = "github:pfassina/lazyvim-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    niri = {
+      url = "github:sodiboo/niri-flake";
+    };
+
+    niri-scratchpad = {
+      url = "github:gvolpe/niri-scratchpad";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

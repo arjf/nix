@@ -1,0 +1,13 @@
+{
+  "settings": [
+    {
+      "layer": "top",
+      "position": "top",
+      "height": 30,
+      "modules-left": [ "niri/workspaces" ],
+      "modules-center": [ "clock" ],
+      "modules-right": [ "network", "pulseaudio", "battery", "tray" ]
+    }
+  ],
+  "style": "* {\n  font-family: \"Fira Sans\", sans-serif;\n  font-size: 13px;\n}\nwindow#waybar {\n  background: rgba(30, 30, 46, 0.9);\n  color: #cdd6f4;\n}\n#workspaces button {\n  padding: 0 6px;\n  color: #585b70;\n}\n#workspaces button.active {\n  color: #cdd6f4;\n}\n#clock, #network, #pulseaudio, #battery {\n  padding: 0 10px;\n}"
+}
