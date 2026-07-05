@@ -11,5 +11,6 @@
     ./neovim.nix
     ./niri.nix
     ./wayland-tooling.nix
+    ./node.nix
   ];
 }
