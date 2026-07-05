@@ -17,5 +17,6 @@
     cursor-cli
     code-cursor-fhs
     antigravity-fhs
+    kilo
   ];
 }
