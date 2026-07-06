@@ -5,6 +5,8 @@
   ...
 }:
 {
+  boot.initrd.lvm.enable = true;
+
   boot.initrd.kernelModules = [
     "dm-snapshot"
     "dm-raid"
