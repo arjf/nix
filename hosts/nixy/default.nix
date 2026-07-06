@@ -25,6 +25,9 @@
     enable = true;
     "allowed-origins" = [ "https://${hostname}:9090" ];
   };
+
+  boot.loader.efi.efiSysMountPoint = "/efi";
+
   system = {
     host = lib.mkForce hostname;
     stateVersion = lib.mkForce "25.11";

@@ -17,8 +17,8 @@
     options = [ "subvol=@home" "compress=none" ];
   };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/26EF-E15E";
+  fileSystems."/efi" = {
+    device = "/dev/disk/by-uuid/B15C-8EC2";
     fsType = "vfat";
     options = [
       "fmask=0022"
