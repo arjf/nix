@@ -9,6 +9,7 @@
   environment.systemPackages = with pkgs; [
     micromamba
     pixi
+    uv
   ];
 
   my.pathAdditions = [ "$HOME/.pixi/bin" ];

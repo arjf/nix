@@ -17,6 +17,7 @@
     ./gen-tools.nix
     ./vcs.nix
     ./aws.nix
+    ./web-tools.nix
   ];
 
   environment.systemPackages = with pkgs; [
