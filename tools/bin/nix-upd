@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-FLAKE="/home/jo/clones/nix"
-SYS="nixy"
+FLAKE="$HOME/clones/nix"
+SYS="$(cat /etc/hostname)"
 CMD="switch"
+NO_UPDATE=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -9,9 +10,14 @@ while [[ $# -gt 0 ]]; do
       SYS="$2"
       shift 2
       ;;
+    -nu|--no-update)
+      NO_UPDATE=true
+      shift
+      ;;
     -h|--help)
       echo "Usage: nix-upd [options] [command]"
-      echo "  -s, --system <name>  system to rebuild (default: nixy)"
+      echo "  -s, --system <name>  system to rebuild (defaults to hostname)"
+      echo "  -nu, --no-update     skip nix flake update"
       echo "  -h, --help           show this help"
       echo "  command              nixos-rebuild command (default: switch)"
       echo ""
@@ -24,5 +30,9 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+if [ "$NO_UPDATE" = false ]; then
+  nix flake update "$FLAKE"
+fi
 
 sudo nixos-rebuild "$CMD" --flake "$FLAKE#$SYS"
