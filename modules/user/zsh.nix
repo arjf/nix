@@ -129,10 +129,10 @@ in
 
         # System info on startup (disabled)
         # ${pkgs.fastfetch}/bin/fastfetch 2>/dev/null || true
+
+        # Shell history (atuin)
+        eval "$(atuin init zsh)" 2>/dev/null || true
       ''
     ];
-    initExtra = ''
-      eval "$(atuin init zsh)" 2>/dev/null || true
-    '';
   };
 }

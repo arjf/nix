@@ -19,7 +19,7 @@
   };
 
   programs.niri.settings.environment = { };
-  programs.niri.settings.window-rules = { };
+  programs.niri.settings.window-rules = [ ];
   programs.niri.settings.spawn-at-startup = [ { argv = [ "waybar" ]; } ]; # ,{ bash = [ "" ];}
   programs.niri.settings.input.focus-follows-mouse.enable = false;
   programs.niri.settings.input.mouse.accel-profile = null;
