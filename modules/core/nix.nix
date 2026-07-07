@@ -12,18 +12,18 @@
       "flakes"
     ];
 
-    max-jobs = lib.mkDefault 0;
+    max-jobs = lib.mkDefault "auto";
     cores = lib.mkDefault 0;
 
     auto-optimise-store = lib.mkDefault true;
 
     substituters = lib.mkBefore [
-      "https://niri-flake.cachix.org"
+      "https://niri.cachix.org"
       "https://nix-community.cachix.org"
     ];
 
     trusted-public-keys = [
-      "niri-flake.cachix.org-1:xJ7qBqNSFob2wUiCQkkCCusMhMG+UiMIGa5E3Cgvd1c="
+      "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
