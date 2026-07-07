@@ -21,6 +21,7 @@
     ../../overrides/bose-soundbar.nix
     ../../modules/core/secure-boot.nix
     ../../modules/core/snapshots.nix
+    ../../modules/desktop/niri.nix
   ];
 
   sops.secrets.smb-password = { };
