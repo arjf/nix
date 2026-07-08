@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Building JetBrains IDEs..."
+NIXPKGS_ALLOW_UNFREE=1 nix build --impure \
+  nixpkgs#jetbrains.idea \
+  nixpkgs#jetbrains.pycharm \
+  nixpkgs#jetbrains.clion \
+  nixpkgs#jetbrains.goland \
+  nixpkgs#jetbrains.webstorm \
+  nixpkgs#jetbrains.rider \
+  nixpkgs#jetbrains.datagrip \
+  nixpkgs#jetbrains.rust-rover \
+  --no-link
+
+echo "Pushing to cachix..."
+cachix push arjf $(NIXPKGS_ALLOW_UNFREE=1 nix build --impure \
+  nixpkgs#jetbrains.idea \
+  nixpkgs#jetbrains.pycharm \
+  nixpkgs#jetbrains.clion \
+  nixpkgs#jetbrains.goland \
+  nixpkgs#jetbrains.webstorm \
+  nixpkgs#jetbrains.rider \
+  nixpkgs#jetbrains.datagrip \
+  nixpkgs#jetbrains.rust-rover \
+  --no-link 2>/dev/null)
+
+echo "Done! JetBrains builds are now cached."

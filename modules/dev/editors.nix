@@ -13,13 +13,5 @@
     bottom
     zed-editor
     vscode-fhs
-    jetbrains.idea
-    jetbrains.pycharm
-    jetbrains.clion
-    jetbrains.goland
-    jetbrains.webstorm
-    jetbrains.rider
-    jetbrains.datagrip
-    jetbrains.rust-rover
   ];
 }
