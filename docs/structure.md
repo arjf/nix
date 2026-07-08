@@ -65,7 +65,9 @@
 │   │   ├── flatpak.nix                # Flatpak support
 │   │   ├── cuda.nix                   # CUDA cache substituters
 │   │   ├── kdeconnect.nix             # KDE Connect phone integration
-│   │   └── throttled.nix              # Intel CPU throttling daemon
+│   │   ├── tuned.nix                  # tuneD power-profiles-daemon compat (host-opt-in)
+│   │   ├── powertop.nix               # Powertop auto-tuning (host-opt-in)
+│   │   └── throttled.nix              # Intel CPU throttling daemon (host-opt-in)
 │   │
 │   ├── desktop/                       # Display manager + DE (swappable)
 │   │   ├── default.nix                # Aggregates siblings + wl-clipboard
@@ -217,6 +219,8 @@ flake.nix
     ├── hardware/i915.nix  (lament only)
     ├── hardware/nvidia.nix (lament only)
     ├── services/cuda.nix  (lament only)
+    ├── services/tuned.nix (nixy only)
+    ├── services/powertop.nix (nixy only)
     ├── services/throttled.nix (lament only)
     └── overrides/bose-soundbar.nix  (lament only)
 ```

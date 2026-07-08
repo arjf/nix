@@ -9,6 +9,8 @@
   imports = [
     ./hardware.nix
     ./filesystems.nix
+    ../../modules/services/tuned.nix
+    ../../modules/services/powertop.nix
     ../../modules/core/btrfs.nix
     ../../modules/core/secure-boot.nix
     ../../modules/core/snapshots.nix
