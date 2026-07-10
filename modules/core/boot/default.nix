@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     ./params.nix
     ./sysctl.nix
@@ -18,7 +19,7 @@
     "riscv64-linux"
   ];
 
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_zen;
   boot.supportedFilesystems = [ "ntfs" ];
   boot.blacklistedKernelModules = [ ];
 }
