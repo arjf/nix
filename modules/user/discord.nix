@@ -26,7 +26,7 @@
         DESKTOP_TTI_DNSTCP_WARMUP = true;
         DESKTOP_TTI_HTTP_CDT = true;
         DESKTOP_TTI_EARLY_UPDATE_CHECK = true;
-        DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING = true;
+        DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING = false;
         openasar = {
           setup = true;
           quickstart = true;
@@ -36,18 +36,18 @@
       };
     };
 
-    legcord = {
-      enable = true;
-      vencord.enable = true;
-      settings = {
-        SKIP_HOST_UPDATE = true;
-        channel = "stable";
-        tray = "dynamic";
-        minimizeToTray = true;
-        mods = [ "vencord" ];
-        doneSetup = true;
-      };
-    };
+    # legcord = {
+    #   enable = false;
+    #   vencord.enable = true;
+    #   settings = {
+    #     SKIP_HOST_UPDATE = true;
+    #     channel = "stable";
+    #     tray = "dynamic";
+    #     minimizeToTray = true;
+    #     mods = [ "vencord" ];
+    #     doneSetup = true;
+    #   };
+    # };
 
     config = {
       autoUpdate = true;
@@ -140,7 +140,7 @@
           enable = true;
           notificationVolume = 100.0;
         };
-        oneko.enable = true;
+        # cursorBuddy.enable = true;
         permissionsViewer.enable = true;
         petpet.enable = true;
         pictureInPicture.enable = true;
