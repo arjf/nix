@@ -61,12 +61,19 @@
   };
 
   # Use NVIDIA GPU
-  services.xserver.videoDrivers = [
+  services.xserver.videoDrivers = lib.mkForce [
     "nvidia"
+    "modesetting"
   ];
 
-  services.xserver.displayManager.setupCommands = ''
-    xrandr --newmode "1366x768" 73.06 1366 1414 1446 1526 768 771 777 798 -hsync +vsync 2>/dev/null
-    xrandr --addmode HDMI-A-1 "1366x768" 2>/dev/null
-  '';
+  # services.xserver.displayManager.setupCommands = ''
+  #   xrandr --newmode "1366x768" 73.06 1366 1414 1446 1526 768 771 777 798 -hsync +vsync 2>/dev/null
+  #   xrandr --addmode HDMI-A-1 "1366x768" 2>/dev/null
+  # '';
+  #
+  hardware.display = {
+    edid.modelines."SHARP" = "85.25   1368 1440 1576 1784   768 771 781 798   -hsync +vsync";
+    outputs."HDMI-A-1".edid = "SHARP.bin";
+    outputs."HDMI-A-1".mode = "e";
+  };
 }
