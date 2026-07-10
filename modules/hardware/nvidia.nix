@@ -6,6 +6,8 @@
 }:
 {
 
+  boot.blacklistedKernelModules = [ "nouveau" ];
+
   boot.kernelModules = [
     "nvidia"
     "nvidia_modeset"
@@ -22,21 +24,29 @@
     options nvidia NVreg_TemporaryFilePath=/var/tmp
   '';
 
-  hardware.nvidia-container-toolkit.enable = true;
+  # hardware.nvidia-container-toolkit.enable = true;
 
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # enabled = true;
+    dynamicBoost.enable = true;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
     modesetting.enable = true;
-    powerManagement.enable = false;
+    powerManagement.enable = true;
     powerManagement.finegrained = false;
+    powerManagement.kernelSuspendNotifier = true;
     open = true;
     nvidiaSettings = true;
     prime = {
-      sync.enable = false;
-      offload.enable = true;
+      reverseSync.enable = true;
+      offload.enable = false;
       intelBusId = lib.mkDefault "PCI:0@0:2:0";
       nvidiaBusId = lib.mkDefault "PCI:1@0:0:0";
-      offload.enableOffloadCmd = true;
     };
+    videoAcceleration = true;
+    nvidiaPersistenced = true;
   };
+
+  hardware.graphics.extraPackages = with pkgs; [
+    nvidia-vaapi-driver
+  ];
 }
