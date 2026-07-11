@@ -10,12 +10,10 @@
 
     vdpauinfo # vdpauinfo
 
-    mesa-glinfo # glxinfo, glxgears
-    egl-utils # eglinfo, eglgears_wayland
-    mesa-utils
+    mesa-demos # glxinfo, glxgears
+    # egl-utils # eglinfo, eglgears_wayland
+    # mesa-utils
 
     vulkan-tools # vulkaninfo
-    vulkan-validation-layers
-
   ];
 }

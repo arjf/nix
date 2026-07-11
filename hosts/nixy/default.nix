@@ -49,6 +49,11 @@
     })
   ];
 
+  services.xserver.videoDrivers = lib.mkForce [
+    "amdgpu"
+    "modesetting"
+  ];
+
   system = {
     host = lib.mkForce hostname;
     stateVersion = lib.mkForce "25.11";
