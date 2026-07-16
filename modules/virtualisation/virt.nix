@@ -32,5 +32,6 @@
     skopeo
     guestfs-tools
     looking-glass-client
+    quickemu
   ];
 }

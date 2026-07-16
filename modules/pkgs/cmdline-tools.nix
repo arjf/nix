@@ -42,5 +42,6 @@
     sysstat
     bind
     nerdctl
+    harper
   ];
 }
