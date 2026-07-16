@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   options.my.pathAdditions = lib.mkOption {
     type = lib.types.listOf lib.types.str;
     default = [ ];

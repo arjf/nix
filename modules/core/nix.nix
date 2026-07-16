@@ -17,7 +17,10 @@
 
     auto-optimise-store = lib.mkDefault true;
 
-    trusted-users = [ "root" "jo" ];
+    trusted-users = [
+      "root"
+      "jo"
+    ];
 
     substituters = lib.mkBefore [
       "https://arjf.cachix.org"

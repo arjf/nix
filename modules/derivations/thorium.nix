@@ -1,7 +1,14 @@
 { pkgs }:
 
 let
-  mkThorium = { pname, version, url, variant, hash }:
+  mkThorium =
+    {
+      pname,
+      version,
+      url,
+      variant,
+      hash,
+    }:
     let
       src = pkgs.fetchurl { inherit url hash; };
       appimageContents = pkgs.appimageTools.extractType2 { inherit pname version src; };

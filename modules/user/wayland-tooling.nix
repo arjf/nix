@@ -1,7 +1,13 @@
 let
   waybarCfg = builtins.fromJSON (builtins.readFile ./config/waybar.json);
 in
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   programs.waybar = {
     enable = true;
     settings = waybarCfg.settings;

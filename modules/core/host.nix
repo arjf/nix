@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   options.system.host = lib.mkOption {
     type = lib.types.str;
     default = "default";

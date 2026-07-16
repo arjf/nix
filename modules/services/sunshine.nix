@@ -1,6 +1,12 @@
- {config, lib, pkgs, inputs, ...}:
- {
-   services.sunshine = {
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
+{
+  services.sunshine = {
     enable = true;
     autoStart = true;
     capSysAdmin = true;

@@ -1,6 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
-  inherit (lib) mkIf mkEnableOption mkOption types mkForce;
+  inherit (lib)
+    mkIf
+    mkEnableOption
+    mkOption
+    types
+    mkForce
+    ;
   cfg = config.services.smb;
 in
 {

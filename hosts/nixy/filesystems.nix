@@ -8,13 +8,19 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/6ae839fc-7a68-4e53-87cd-1d4dc649c67a";
     fsType = "btrfs";
-    options = [ "subvol=@" "compress=none" ];
+    options = [
+      "subvol=@"
+      "compress=none"
+    ];
   };
 
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/6ae839fc-7a68-4e53-87cd-1d4dc649c67a";
     fsType = "btrfs";
-    options = [ "subvol=@home" "compress=none" ];
+    options = [
+      "subvol=@home"
+      "compress=none"
+    ];
   };
 
   fileSystems."/efi" = {

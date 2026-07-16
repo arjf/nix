@@ -1,4 +1,11 @@
-{ config, lib, pkgs, inputs, my ? {}, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  my ? { },
+  ...
+}:
 
 let
   cfg = my.hyprland.deployDots or false;

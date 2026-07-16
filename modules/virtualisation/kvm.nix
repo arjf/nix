@@ -5,7 +5,10 @@
   ...
 }:
 {
-  boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
+  boot.kernelModules = [
+    "kvm-amd"
+    "kvm-intel"
+  ];
 
   boot.extraModprobeConfig = ''
     options kvm ignore_msrs=1 report_ignored_msrs=0

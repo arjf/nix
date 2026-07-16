@@ -32,7 +32,7 @@
         prefix=${config.home.homeDirectory}/.npm-packages
       '';
 
-      home.activation.copyKittyTerminfo = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      home.activation.copyKittyTerminfo = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         if [ -f /run/current-system/sw/share/terminfo/x/xterm-kitty ] && \
            [ ! -f ${config.home.homeDirectory}/micromamba/share/terminfo/78/xterm-kitty ]; then
           mkdir -p ${config.home.homeDirectory}/micromamba/share/terminfo/78
