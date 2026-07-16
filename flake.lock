@@ -209,6 +209,22 @@
         "type": "github"
       }
     },
+    "hyprland-dots": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783362098,
+        "narHash": "sha256-ePmXR0XwB6HU+UiKT7YqmJ6XaMJoQPlwpjI9+HLb4RY=",
+        "owner": "LinuxBeginnings",
+        "repo": "Hyprland-Dots",
+        "rev": "bca86bbec4757cec1f6f5bdea2ed210542f10fae",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LinuxBeginnings",
+        "repo": "Hyprland-Dots",
+        "type": "github"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -487,11 +503,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783771036,
-        "narHash": "sha256-P6fvrJPHOu5MedC8CRUsrSBAsyg+J4aNhL7eaJ5EYR8=",
+        "lastModified": 1783789963,
+        "narHash": "sha256-65/7RPt9K1CHa/xa85zHlXn31wUGee/a+OHn8hcQkb0=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "b3cd94506ad0d8dbaee902fb38579d0bd45fef8e",
+        "rev": "4426622c58baad820efb6a8631a3b326886e863e",
         "type": "github"
       },
       "original": {
@@ -526,6 +542,7 @@
       "inputs": {
         "helium": "helium",
         "home-manager": "home-manager",
+        "hyprland-dots": "hyprland-dots",
         "lanzaboote": "lanzaboote",
         "lazyvim-nix": "lazyvim-nix",
         "niri": "niri",

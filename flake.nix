@@ -62,6 +62,11 @@
       url = "github:gvolpe/niri-scratchpad";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hyprland-dots = {
+      url = "github:LinuxBeginnings/Hyprland-Dots";
+      flake = false;
+    };
   };
 
   outputs =

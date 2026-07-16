@@ -21,8 +21,16 @@
     ../../overrides/bose-soundbar.nix
     ../../modules/core/secure-boot.nix
     ../../modules/core/snapshots.nix
-    ../../modules/desktop/niri.nix
+    ../../modules/desktop/hyprland.nix
+    ../../modules/desktop/ly.nix
   ];
+
+  services.displayManager.sddm.enable = lib.mkForce false;
+
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [ drkonqi ];
+  systemd.services."drkonqi-coredump-processor@" = {
+    enable = lib.mkForce false;
+  };
 
   sops.secrets.smb-password = { };
 
@@ -42,10 +50,7 @@
       # pnpm_10 (10.34.0) has all the same fixes and is not insecure.
       pnpm_10_29_2 = prev.pnpm_10;
 
-      # micromamba copies the bash wrapper (bin/mamba) instead of the actual
-      # ELF binary. When the wrapper execs .mamba-wrapped, that binary reads
-      # /proc/self/exe and refuses to run because its filename isn't "mamba"
-      # or "micromamba". Copy the ELF binary directly.
+      # micromamba nixpkg issue
       micromamba = prev.micromamba.overrideAttrs (old: {
         installPhase = ''
           mkdir -p $out/bin
@@ -66,14 +71,4 @@
     "modesetting"
   ];
 
-  # services.xserver.displayManager.setupCommands = ''
-  #   xrandr --newmode "1366x768" 73.06 1366 1414 1446 1526 768 771 777 798 -hsync +vsync 2>/dev/null
-  #   xrandr --addmode HDMI-A-1 "1366x768" 2>/dev/null
-  # '';
-  #
-  hardware.display = {
-    edid.modelines."SHARP" = "85.25   1368 1440 1576 1784   768 771 781 798   -hsync +vsync";
-    outputs."HDMI-A-1".edid = "SHARP.bin";
-    outputs."HDMI-A-1".mode = "e";
-  };
 }

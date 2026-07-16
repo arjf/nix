@@ -10,6 +10,7 @@
     description = "jo";
     extraGroups = [
       "wheel"
+      "input"
       "storage"
       "uinput"
     ];
