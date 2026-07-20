@@ -6,5 +6,9 @@
   ...
 }:
 {
+  imports = [
+    ../../modules/desktop/default.nix
+  ];
+
   system.host = hostname;
 }

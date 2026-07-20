@@ -24,6 +24,9 @@
 
     programs.hyprlock.enable = true;
     programs.dconf.enable = true;
+    services.printing.enable = lib.mkDefault true;
+    services.gvfs.enable = lib.mkDefault true;
+    services.udisks2.enable = lib.mkDefault true;
     services.gnome.gnome-keyring.enable = false; # rely on kdewallet for now instead
 
     xdg.portal = {

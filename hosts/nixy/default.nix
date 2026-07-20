@@ -16,6 +16,7 @@
     ../../modules/core/secure-boot.nix
     ../../modules/core/snapshots.nix
     ../../modules/core/zram.nix
+    ../../modules/desktop/default.nix
   ];
 
   sops.secrets.smb-password = { };
