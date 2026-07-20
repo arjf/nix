@@ -13,6 +13,8 @@
       "input"
       "storage"
       "uinput"
+      "video"
+      "render"
     ];
     shell = pkgs.zsh;
     packages = with pkgs; [

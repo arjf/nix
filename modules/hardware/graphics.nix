@@ -11,9 +11,9 @@
   };
 
   environment.systemPackages = with pkgs; [
-    openvino
-    openvino-genai
-    openvino-tokenizers
-
+    libva-utils
+    vdpauinfo
+    vulkan-tools
+    mesa-demos
   ];
 }

@@ -16,6 +16,7 @@
     ../../modules/hardware/msi.nix
     ../../modules/hardware/i915.nix
     ../../modules/hardware/nvidia.nix
+    ../../modules/hardware/openvino.nix
     ../../modules/services/cuda.nix
     # ../../modules/services/throttled.nix
     ../../overrides/bose-soundbar.nix

@@ -18,7 +18,8 @@
 │   │   ├── hardware.nix               # Hardware scan output
 │   │   ├── luks.nix                   # Real LUKS UUID (mkForce)
 │   │   └── filesystems.nix            # LVM + NTFS mount points
-│   └── nixy/                          # AMD desktop
+│   └── nixy/                          # AMD Ryzen 5 3500U desktop (Vega 8)
+│       ├── README.md                  # Hardware + config reference
 │       ├── default.nix                # Host overlay - imports + overrides
 │       ├── hardware.nix               # Hardware scan output (AMD CPU/GPU)
 │       └── filesystems.nix            # Btrfs subvol layout
@@ -56,6 +57,7 @@
 │   │   ├── msi.nix                    # MSI laptop EC (msi-ec kmod via overrideAttrs) - host-opt-in
 │   │   ├── i915.nix                   # Intel i915 GPU params - host-opt-in
 │   │   ├── nvidia.nix                 # NVIDIA GPU (modesetting, prime) - host-opt-in
+│   │   ├── amdgpu.nix                 # AMD GPU (ppfeaturemask, VA-API, VDPAU) - host-opt-in
 │   │   └── v4l2lo.nix                 # v4l2loopback - pulled by obs-studio
 │   │
 │   ├── services/                      # Optional system services
@@ -219,6 +221,7 @@ flake.nix
     ├── hardware/i915.nix  (lament only)
     ├── hardware/nvidia.nix (lament only)
     ├── services/cuda.nix  (lament only)
+    ├── hardware/amdgpu.nix (nixy only)
     ├── services/tuned.nix (nixy only)
     ├── services/powertop.nix (nixy only)
     ├── services/throttled.nix (lament only)
