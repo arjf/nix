@@ -20,7 +20,7 @@
     "sd_mod"
     "rtsx_usb_sdmmc"
   ];
-  boot.initrd.kernelModules = [ "dm-snapshot" "amdgpu" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [
     "kvm-amd"
     "amdgpu"
