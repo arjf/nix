@@ -7,6 +7,7 @@
 }:
 {
   imports = [
+    ./hw-accel.nix
     ./wayland-tooling.nix
   ];
 
