@@ -27,6 +27,7 @@
   ];
 
   services.displayManager.sddm.enable = lib.mkForce false;
+  services.desktopManager.plasma6.enable = lib.mkForce false;
 
   environment.plasma6.excludePackages = with pkgs.kdePackages; [ drkonqi ];
   systemd.services."drkonqi-coredump-processor@" = {
