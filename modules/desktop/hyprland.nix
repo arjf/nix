@@ -24,10 +24,11 @@
 
     programs.hyprlock.enable = true;
     programs.dconf.enable = true;
+
     services.printing.enable = lib.mkDefault true;
     services.gvfs.enable = lib.mkDefault true;
     services.udisks2.enable = lib.mkDefault true;
-    services.gnome.gnome-keyring.enable = false; # rely on kdewallet for now instead
+    services.gnome.gnome-keyring.enable = false;
 
     xdg.portal = {
       enable = true;
@@ -59,7 +60,6 @@
 
     systemd.user.services.polkit-agent.enable = true;
 
-    # kwalletd6 — primary keyring daemon (auto-unlocked by pam_kwallet5.so via ly)
     systemd.user.services.kwalletd = {
       description = "KDE Wallet Manager (kwalletd6)";
       after = [ "graphical-session.target" ];
@@ -73,55 +73,21 @@
     };
 
     environment.systemPackages = with pkgs; [
-      hypridle
+      # System-level Hyprland infrastructure
       hyprpolkitagent
-      hyprlang
-      hyprshot
-      hyprcursor
-      hyprland-qt-support
       uwsm
       mate-polkit
-
-      swaynotificationcenter
-
-      wallust
-      waypaper
-
-      nwg-displays
-      nwg-look
       thunar
       xfconf
-      wdisplays
-      wlr-randr
-      wlogout
-
-      grimblast
-      grim
-      slurp
-      swappy
-
-      awww
-      hyprshutdown
       xdg-user-dirs
-      playerctl
-      pamixer
-      yad
-      xdg-utils
-      gtk-engine-murrine
 
-      cliphist
-      brightnessctl
+      # System utilities
+      networkmanagerapplet
+      blueman
       libnotify
       socat
-
       jq
-      cava
-
-      nerd-fonts.jetbrains-mono
-
-      blueman
-      caffeine-ng
-      networkmanagerapplet
+      brightnessctl
     ];
   };
 }
