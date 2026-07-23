@@ -10,6 +10,7 @@
     ./hardware.nix
     ./filesystems.nix
     ../../modules/hardware/amdgpu.nix
+    ../../modules/hardware/card-reader.nix
     ../../modules/services/tuned.nix
     ../../modules/services/powertop.nix
     ../../modules/core/btrfs.nix
