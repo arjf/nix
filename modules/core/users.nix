@@ -15,6 +15,7 @@
       "uinput"
       "video"
       "render"
+      "lpadmin"
     ];
     shell = pkgs.zsh;
     packages = with pkgs; [

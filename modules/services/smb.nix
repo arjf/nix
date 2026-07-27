@@ -43,6 +43,8 @@ in
     services.tailscale.enable = mkForce true;
 
     services.samba = {
+      # package = pkgs.samba4Full;
+      usershares.enable = true;
       enable = true;
       nmbd.enable = false;
       winbindd.enable = false;
@@ -56,12 +58,17 @@ in
         };
         "${cfg.userName}" = {
           path = "/home/${cfg.userName}";
-          "valid users" = cfg.userName;
+            "valid users" = cfg.userName;
           "read only" = "no";
           browseable = "yes";
           comment = "${cfg.userName}'s home directory";
         };
       };
+    };
+
+    services.samba-wsdd = {
+      enable = true;
+      # openFirewall = true;
     };
 
     users.users.${cfg.userName}.extraGroups = [ "samba" ];

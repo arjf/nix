@@ -14,5 +14,7 @@
     ./sunshine.nix
     ./cockpit.nix
     ./smb.nix
+    ./avahi.nix
+    ./cups.nix
   ];
 }
