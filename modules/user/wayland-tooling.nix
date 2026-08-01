@@ -15,7 +15,7 @@ in
   };
 
   services.mako = {
-    enable = true;
+    enable = false;
     settings = {
       default-timeout = 5000;
     };

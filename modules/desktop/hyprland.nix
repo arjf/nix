@@ -56,7 +56,7 @@
       XDG_CURRENT_DESKTOP = "Hyprland";
     };
 
-    systemd.user.services.mako.enable = lib.mkForce false;
+    # systemd.user.services.mako.enable = lib.mkForce false;
 
     systemd.user.services.polkit-agent.enable = true;
 

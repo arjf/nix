@@ -64,5 +64,5 @@ in
   # Disable services that Hyprland-Dots provides its own config for
   programs.waybar.enable = lib.mkIf cfg (lib.mkForce false);
   programs.rofi.enable = lib.mkIf cfg (lib.mkForce false);
-  services.mako.enable = lib.mkIf cfg (lib.mkForce false);
+  # services.mako.enable = lib.mkIf cfg (lib.mkForce false);
 }
