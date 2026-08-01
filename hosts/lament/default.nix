@@ -18,7 +18,7 @@
     ../../modules/hardware/nvidia.nix
     ../../modules/hardware/openvino.nix
     ../../modules/services/cuda.nix
-    # ../../modules/services/throttled.nix
+    ../../modules/services/throttled.nix
     ../../overrides/bose-soundbar.nix
     ../../modules/core/secure-boot.nix
     ../../modules/core/snapshots.nix
@@ -28,6 +28,9 @@
 
   services.displayManager.sddm.enable = lib.mkForce false;
   services.desktopManager.plasma6.enable = lib.mkForce false;
+  services.power-profiles-daemon = {
+    enable = lib.mkForce false;
+  };
 
   environment.plasma6.excludePackages = with pkgs.kdePackages; [ drkonqi ];
   systemd.services."drkonqi-coredump-processor@" = {
