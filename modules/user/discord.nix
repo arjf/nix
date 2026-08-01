@@ -58,6 +58,11 @@
       disableMinSize = true;
 
       plugins = {
+        fakeNitro = {
+          enable = false;
+          emojiSize = "48";
+          stickerSize = "160";
+        };
         alwaysAnimate.enable = true;
         alwaysExpandRoles.enable = true;
         alwaysTrust = {
@@ -112,8 +117,6 @@
         forceOwnerCrown.enable = true;
         gameActivityToggle = {
           enable = true;
-          location = "PANEL";
-          oldIcon = false;
         };
         gifPaste.enable = true;
         iLoveSpam.enable = true;
