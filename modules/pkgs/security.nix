@@ -11,7 +11,7 @@
   environment.systemPackages = with pkgs; [
     gnupg
     pinentry-curses
-    # bitwarden-desktop # waiting on upstream fix on electron ver
+    bitwarden-desktop
     bitwarden-cli
     keepassxc
     keybase-gui
