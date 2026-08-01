@@ -43,5 +43,13 @@
     bind
     nerdctl
     harper
+    nvitop
+    s-tui
+    glmark2
+    gamescope
+    p7zip
+    toybox
+    e2fsprogs
+    busybox
   ];
 }
