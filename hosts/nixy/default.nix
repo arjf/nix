@@ -57,6 +57,10 @@
     "amdgpu"
     "modesetting"
   ];
+  boot.kernelParams = [
+    "amd_pstate=passive"
+    "amd_pstate.shared_mem=1"
+  ];
 
   system = {
     host = lib.mkForce hostname;
