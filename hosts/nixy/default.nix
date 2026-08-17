@@ -40,16 +40,6 @@
       # pnpm_10 (10.34.0) has all the same fixes and is not insecure.
       pnpm_10_29_2 = prev.pnpm_10;
       "electron-40" = final.electron;
-      # micromamba copies the bash wrapper (bin/mamba) instead of the actual
-      # ELF binary. When the wrapper execs .mamba-wrapped, that binary reads
-      # /proc/self/exe and refuses to run because its filename isn't "mamba"
-      # or "micromamba". Copy the ELF binary directly.
-      micromamba = prev.micromamba.overrideAttrs (old: {
-        installPhase = ''
-          mkdir -p $out/bin
-          cp ${prev.mamba-cpp}/bin/.mamba-wrapped $out/bin/micromamba
-        '';
-      });
     })
   ];
 

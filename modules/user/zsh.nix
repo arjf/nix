@@ -94,9 +94,6 @@ in
         alias respring="systemctl reboot"
         alias db="distrobox"
 
-        export MAMBA_ROOT_PREFIX="$HOME/micromamba"
-        eval "$(micromamba shell hook --shell=zsh)" 2>/dev/null || true
-
         # FZF shell integration (key bindings: CTRL-R, CTRL-T, ALT-C)
         source <(fzf --zsh) 2>/dev/null || true
 

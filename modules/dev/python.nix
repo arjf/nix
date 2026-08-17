@@ -7,7 +7,6 @@
 {
   # Python development
   environment.systemPackages = with pkgs; [
-    micromamba
     pixi
     uv
   ];
