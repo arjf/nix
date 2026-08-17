@@ -11,7 +11,9 @@
     remmina
     kdePackages.krdc
     droidcam
-    moonlight-qt
+    (moonlight-qt.override {
+      ffmpeg = ffmpeg_8;
+    })
     parsec-bin
   ];
 }
