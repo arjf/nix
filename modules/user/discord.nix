@@ -58,11 +58,11 @@
       disableMinSize = true;
 
       plugins = {
-        fakeNitro = {
-          enable = false;
-          emojiSize = "48";
-          stickerSize = "160";
-        };
+        #fakeNitro = {
+        #  enable = false;
+        #  emojiSize = "48";
+        #  stickerSize = "160";
+        #};
         alwaysAnimate.enable = true;
         alwaysExpandRoles.enable = true;
         alwaysTrust = {
