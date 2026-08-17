@@ -39,7 +39,6 @@
       # pnpm_10_29_2 is pinned for electron-builder compat but has known CVEs.
       # pnpm_10 (10.34.0) has all the same fixes and is not insecure.
       pnpm_10_29_2 = prev.pnpm_10;
-      "electron-40" = final.electron;
     })
   ];
 
