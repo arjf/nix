@@ -27,7 +27,6 @@ in
     # Theming
     wallust
     waypaper
-    gtk-engine-murrine
 
     # Display management
     nwg-displays
