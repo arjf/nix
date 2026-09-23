@@ -22,7 +22,7 @@
   ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [
-    "kvm-amd"
+    # "kvm-amd"
     "amdgpu"
     "i2c_algo_bit"
     "i2c_hid"

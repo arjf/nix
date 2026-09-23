@@ -24,6 +24,7 @@
     ../../modules/core/snapshots.nix
     ../../modules/desktop/hyprland.nix
     ../../modules/desktop/ly.nix
+    ../../modules/virtualisation/kvm-intel.nix
   ];
 
   services.displayManager.sddm.enable = lib.mkForce false;

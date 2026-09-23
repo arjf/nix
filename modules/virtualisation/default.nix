@@ -6,7 +6,6 @@
 }:
 {
   imports = [
-    ./kvm.nix
     ./docker.nix
     ./podman.nix
     ./virt.nix

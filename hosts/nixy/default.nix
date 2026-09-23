@@ -18,6 +18,7 @@
     ../../modules/core/snapshots.nix
     ../../modules/core/zram.nix
     ../../modules/desktop/default.nix
+    ../../modules/virtualisation/kvm-amd.nix
   ];
 
   sops.secrets.smb-password = { };
