@@ -24,6 +24,11 @@
     options nvidia NVreg_TemporaryFilePath=/var/tmp
   '';
 
+  #boot.kernel.sysctl = {
+  #  "vm.min_free_kbytes" = 262144; # 256MB buffer
+  #  "vm.watermark_boost_factor" = 15000;
+  #};
+
   # hardware.nvidia-container-toolkit.enable = true;
 
   hardware.nvidia = {
@@ -31,10 +36,10 @@
     dynamicBoost.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.latest;
     modesetting.enable = true;
-    powerManagement.enable = true;
+    powerManagement.enable = false;
     powerManagement.finegrained = false;
-    powerManagement.kernelSuspendNotifier = true;
-    open = true;
+    powerManagement.kernelSuspendNotifier = false;
+    open = false;
     nvidiaSettings = true;
     prime = {
       reverseSync.enable = true;
@@ -43,7 +48,7 @@
       nvidiaBusId = lib.mkDefault "PCI:1@0:0:0";
     };
     videoAcceleration = true;
-    nvidiaPersistenced = true;
+    nvidiaPersistenced = false;
   };
 
   hardware.graphics.extraPackages = with pkgs; [
