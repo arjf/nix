@@ -22,8 +22,6 @@
     ../../overrides/bose-soundbar.nix
     ../../modules/core/secure-boot.nix
     ../../modules/core/snapshots.nix
-    ../../modules/desktop/hyprland.nix
-    ../../modules/desktop/ly.nix
     ../../modules/virtualisation/kvm-intel.nix
     ../../modules/desktop/cosmic-greeter.nix
     ../../modules/desktop/cosmic.nix
