@@ -19,7 +19,7 @@
     "riscv64-linux"
   ];
 
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_zen;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
   boot.supportedFilesystems = [ "ntfs" ];
   boot.blacklistedKernelModules = [ ];
 }
