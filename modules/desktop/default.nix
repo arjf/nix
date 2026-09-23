@@ -6,8 +6,8 @@
 }:
 {
   imports = [
-    ./sddm.nix
-    ./plasma.nix
+    #./sddm.nix
+    #./plasma.nix
     ./hw-accel.nix
   ];
 
@@ -18,5 +18,17 @@
 
   environment.systemPackages = with pkgs; [
     wl-clipboard
+  ];
+
+  services.xserver.enable = lib.mkDefault true;
+
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
+  services.xserver.videoDrivers = lib.mkDefault [
+    "modesetting"
   ];
 }

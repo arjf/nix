@@ -9,8 +9,8 @@
     ./zsh.nix
     ./discord.nix
     ./neovim.nix
-    ./wayland-tooling.nix
+    # ./wayland-tooling.nix
     ./node.nix
-    ./hyprland.nix
+    # ./hyprland.nix
   ];
 }

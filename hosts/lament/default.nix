@@ -25,16 +25,12 @@
     ../../modules/desktop/hyprland.nix
     ../../modules/desktop/ly.nix
     ../../modules/virtualisation/kvm-intel.nix
+    ../../modules/desktop/cosmic-greeter.nix
+    ../../modules/desktop/cosmic.nix
+    ../../modules/desktop/default.nix
   ];
 
-  services.displayManager.sddm.enable = lib.mkForce false;
-  services.desktopManager.plasma6.enable = lib.mkForce false;
   services.power-profiles-daemon = {
-    enable = lib.mkForce false;
-  };
-
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [ drkonqi ];
-  systemd.services."drkonqi-coredump-processor@" = {
     enable = lib.mkForce false;
   };
 
