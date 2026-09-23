@@ -77,4 +77,9 @@
     "modesetting"
   ];
 
+  boot.kernel.sysctl = {
+    "kernel.perf_event_max_sample_rate" = 25000;
+    "kernel.perf_cpu_time_max_percent" = 10;
+  };
+
 }
