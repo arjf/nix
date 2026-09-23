@@ -87,6 +87,7 @@
     {
       nixosConfigurations = {
         default = mkHost "default";
+        sofia = mkHost "sofia";
         lament = mkHost "lament";
         nixy = mkHost "nixy";
       };
