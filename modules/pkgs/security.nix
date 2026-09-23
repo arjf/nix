@@ -14,7 +14,7 @@
     bitwarden-desktop
     bitwarden-cli
     keepassxc
-    keybase-gui
+    #keybase-gui
     keybase
     kbfs
   ];
