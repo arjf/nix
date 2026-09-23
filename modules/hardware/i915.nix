@@ -7,6 +7,7 @@
 {
   # Intel i915 iGPU
   boot.kernelModules = [ "i915" ];
+  boot.blacklistedKernelModules = [ "xe" ];
 
   boot.kernelParams = [
     # "i915.force_probe=9a68"    # unnecessary on kernel 7.1, TigerLake is auto-detected
